@@ -98,13 +98,13 @@ int Server::accept_client()
         std::cout << "Accept failed" << std::endl;
         return -1;
     }
+    this->addClient(client_fd, new Client());
     std::string add = inet_ntoa(client_address.sin_addr);
     this->clients[client_fd]->set_ip_address(add);
     this->pport[client_fd] = ntohs(client_address.sin_port);
     this->setPport(client_fd, ntohs(client_address.sin_port));
     std::cout << "\n[\033[32;1mINFO\033[0m] \033[33;1mNew client connected with ip address\033[0m [\033[32;1m" << add << "\033[0m] \033[33;1mFrom port\033[0m [\033[32;1m" \
     << ntohs(client_address.sin_port) << "\033[0m]" << std::endl;
-    this->addClient(client_fd, new Client());
     return client_fd;
 }
 std::string update_str(std::string str)
@@ -219,51 +219,49 @@ int main(int ac, char **av)
     server.setPort(atoi(av[1]));
     std::vector<pollfd> fds;
     
+    if (!server.initServer())
+        return (0);
     
     fds.push_back(pollfd());
     fds.back().fd = server.getServer_fd();
     fds.back().events = POLLIN;
-
-    std::cout << "Server is listening on port " << server.getPort() << std::endl;
     while (true) 
     {
-    int ready = poll(&fds[0], fds.size(), 0);
-    if (ready == -1) 
-    {
-        std::cout << "Poll failed" << std::endl;
-        break;
-    }
-
-    for (size_t i = 0; i < fds.size(); ++i) 
-    {
-        if (fds[i].revents & POLLIN) 
+        int ready = poll(&fds[0], fds.size(), 0);
+        if (ready == -1) 
         {
-            if (fds[i].fd == server.getServer_fd())
+            std::cout << "Poll failed" << std::endl;
+            break;
+        }
+        for (size_t i = 0; i < fds.size(); ++i) 
+        {
+            if (fds[i].revents & POLLIN) 
             {
-                // New connection
-                int client_fd = server.accept_client();
-                if (client_fd > 0) 
+                if (fds[i].fd == server.getServer_fd())
                 {
-                    fds.push_back(pollfd());
-                    fds.back().fd = client_fd;
-                    fds.back().events = POLLIN;
-                }
-                else
-                    continue;
-            } 
-            else 
-            {
-                // Incoming data
-                if (server.receve_msg(fds[i].fd) == -1)
+                    // New connection
+                    int client_fd = server.accept_client();
+                    if (client_fd > 0) 
+                    {
+        std::cout << "Waiting for incoming connections..." << std::endl;
+                        fds.push_back(pollfd());
+                        fds.back().fd = client_fd;
+                        fds.back().events = POLLIN;
+                    }
+                    else
+                        continue;
+                } 
+                else 
                 {
-                    fds.erase(fds.begin() + i);
-                    i--;
+                    // Incoming data
+                    if (server.receve_msg(fds[i].fd) == -1)
+                    {
+                        fds.erase(fds.begin() + i);
+                        i--;
+                    }
                 }
             }
-       
         }
     }
-    
     return (0);
 }
-

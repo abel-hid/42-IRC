@@ -106,19 +106,9 @@ class Server
 
 
 
-        void addClient(int fd, Client *client)
-        {
-            this->clients[fd] = client;
-        }
-        void removeClient(int fd)
-        {
-            this->clients.erase(fd);
-        }
-        
-        void setClients(std::map<int, Client *> clients)
-        {
-            this->clients = clients;
-        }
+        void addClient(int fd, Client *client);
+        void removeClient(int fd);
+        void setClients(std::map<int, Client *> clients);
 
         
 
@@ -132,7 +122,6 @@ class Server
         bool			IsAuthorized(Client &);
         Client*			getClientByFd(int fdUser);
 		Client*			getClientByNickname(std::string nickname);
-        void removeClient(int fd);
         void set_realname(int fd, std::string realname);
         void set_hostname(int fd, std::string hostname);
         void set_servername(int fd, std::string servername);
@@ -174,8 +163,6 @@ class Server
 		void			cmdknick(std::vector<std::string> &words, Client *c );
 		void			cmdprivmsg(std::vector<std::string>& words, Client *c , std::string str);
         bool is_authenticated(Client &client);
-		void addClient(int fd, Client *client);
-        void setClients(std::map<int, Client *> clients);
         bool getInviteToChannel(int fd);
 		void comdBotBot(std::string str);
 		void topic_command(std::vector<std::string > words , int fd , std::string str);
@@ -187,8 +174,6 @@ class Server
         void nickCmd1(std::string msg, Client *c);
         Client*   getClientByNickname(std::string nick, std::map <int, Client *> clients);
         std::map<std::string, Channel *> &getChannels();
-		void setFlagMode(bool flag);
-        bool getFlagMode();
         bool isClientExist(std::string nickname);
         bool isValidChannelName(std::string name);
         bool isChannelExist(std::string channelname);

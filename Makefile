@@ -18,7 +18,7 @@ O_DIR   := OBJ_DER
 B_DIR	:= OBJ_DER_BONUS
 
 SRCS = $(addprefix src/, main.cpp invite.cpp topic.cpp mode.cpp part.cpp kick.cpp join.cpp privmsg.cpp \
-	quit.cpp methods.cpp command.cpp  Bot.cpp nick.cpp pass.cpp user.cpp Client.cpp Server.cpp Channels.cpp )
+	quit.cpp command.cpp  Bot.cpp nick.cpp pass.cpp user.cpp Client.cpp Server.cpp Channels.cpp )
 
 M_SRCS =  $(SRCS)
 
