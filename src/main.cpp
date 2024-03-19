@@ -43,50 +43,54 @@ void handl_signal(int signum)
 		exit(0);
 }
 
-bool Server::initServer()
-{
-    // create socket file descriptor
+bool Server::initServer() {
+    // Create socket file descriptor
     this->setServer_fd(socket(AF_INET, SOCK_STREAM, 0)); // 0 for TCP and 1 for UDP
-    // check if socket is created
-    if (this->getServer_fd() < 0)
-    {
-        std::cout << "Socket failed" << std::endl;
-        return (0);
-    }
-    //scokaddr_in is a structure containing an internet address
-    int opt = 1;
-    sockaddr_in address;
-    // set address family
-    address.sin_family = AF_INET; // AF_INET is the address family for IPv4
-    address.sin_addr.s_addr = INADDR_ANY; //INADDR_ANY means any address for binding
-    address.sin_port = htons(this->getPort()); // htons() converts port number to network byte order
-    this->setAddress(address);
-    // bind socket to address
-    // non blocking
-    if(setsockopt(this->getServer_fd(), SOL_SOCKET,SO_REUSEPORT, &opt, sizeof(opt)) < 0)
-    {
-        std::cout << "Setsockopt failed" << std::endl;
-        return (0);
-    }
-    if (fcntl(this->getServer_fd(), F_SETFL, O_NONBLOCK) < 0)
-    {
-        std::cout << "Fcntl failed" << std::endl;
-        return (0);
+    // Check if socket is created
+    if (this->getServer_fd() == -1) {
+        std::cerr << "Socket failed" << std::endl;
+        return false;
     }
     
-    if (bind(this->getServer_fd(), (struct sockaddr *)&address, sizeof(this->getAddress())) < 0)
-    {
-        std::cout << "Bind failed" << std::endl;
-        return (0);
+    int opt = 1;
+    struct sockaddr_in address;
+    // Set address family
+    address.sin_family = AF_INET; // AF_INET is the address family for IPv4
+    address.sin_addr.s_addr = INADDR_ANY; // INADDR_ANY means any address for binding
+    address.sin_port = htons(this->getPort()); // htons() converts port number to network byte order
+    this->setAddress(address);
+    
+    // Set socket options
+    if (setsockopt(this->getServer_fd(), SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt)) < 0) {
+        std::cerr << "Setsockopt failed" << std::endl;
+        close(this->getServer_fd());
+        return false;
     }
-    // listen for connections on a socket
-    if (listen(this->getServer_fd(), 7000) < 0) // 3 is the maximum size of queue connections
-    {
-        std::cout << "Listen failed" << std::endl;
-        return (0);
+    
+    // Set non-blocking mode
+    if (fcntl(this->getServer_fd(), F_SETFD, O_NONBLOCK) < 0) {
+        std::cerr << "Fcntl failed" << std::endl;
+        close(this->getServer_fd());
+        return false;
     }
-    return 1;
+    
+    // Bind socket to address
+    if (bind(this->getServer_fd(), reinterpret_cast<struct sockaddr *>(&address), sizeof(address)) < 0) {
+        std::cerr << "Bind failed" << std::endl;
+        close(this->getServer_fd());
+        return false;
+    }
+    
+    // Listen for connections on a socket
+    if (listen(this->getServer_fd(), 128) < 0) { // 128 is the maximum size of queue connections
+        std::cerr << "Listen failed" << std::endl;
+        close(this->getServer_fd());
+        return false;
+    }
+    
+    return true;
 }
+
 
 int Server::accept_client()
 {
@@ -98,7 +102,8 @@ int Server::accept_client()
         std::cout << "Accept failed" << std::endl;
         return -1;
     }
-    this->addClient(client_fd, new Client());
+    fcntl(client_fd, F_SETFD, O_NONBLOCK);
+    this->addClient(client_fd, new Client(client_fd));
     std::string add = inet_ntoa(client_address.sin_addr);
     this->clients[client_fd]->set_ip_address(add);
     this->pport[client_fd] = ntohs(client_address.sin_port);
@@ -180,6 +185,8 @@ int Server::receve_msg(int fd)
             }
             str = tmp + str;
             str  = update_str(str);
+            if (str.empty())
+                return 1;
             std::string tmp1 = str;
             std::string up = tmp1.substr(0, tmp1.find_first_of(" "));
             for (int i = 0 ; up[i] ; i++)
@@ -215,8 +222,11 @@ int main(int ac, char **av)
 		return 0;
 	}
 	signal(SIGINT, handl_signal);
+    std::cout << Welcome << std::endl;
+	std::cout<< "\t[\033[32;1mINFO\033[0m] \033[32;1mServer is running on port \033[0m[\033[32;1m" << av[1] << "\033[0m]\n" << std::endl;
     Server server;
     server.setPort(atoi(av[1]));
+    server.setServerPassword(av[2]);
     std::vector<pollfd> fds;
     
     if (!server.initServer())
@@ -243,7 +253,6 @@ int main(int ac, char **av)
                     int client_fd = server.accept_client();
                     if (client_fd > 0) 
                     {
-        std::cout << "Waiting for incoming connections..." << std::endl;
                         fds.push_back(pollfd());
                         fds.back().fd = client_fd;
                         fds.back().events = POLLIN;

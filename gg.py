@@ -23,11 +23,11 @@ async def connect_socket(i):
             #     break
             # response = data.decode()
             # print(f"Received: {response}")
+            # await asyncio.sleep(DELAY)
+            # writer.write(f"JOIN #general\r\n".encode())
+            # await writer.drain()
             await asyncio.sleep(DELAY)
-            writer.write(f"JOIN #general\r\n".encode())
-            await writer.drain()
-            await asyncio.sleep(DELAY)
-            writer.write(f"PRIVMSG #general :A7san Server Fl3alam{i}\r\n".encode())
+            # writer.write(f"PRIVMSG #general :A7san Server Fl3alam{i}\r\n".encode())
             await writer.drain()
 
     except asyncio.CancelledError:

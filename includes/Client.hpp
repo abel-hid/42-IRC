@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 17:41:59 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/19 00:45:31 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/19 19:51:59 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class Client
 		std::vector<std::string> str;
     public:
         Client();
+        Client(int fd);
         ~Client();
         void set_is_Registered(int is_registered);
         int is_Registered();
