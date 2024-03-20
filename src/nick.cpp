@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:00:56 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/19 20:47:28 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/20 20:41:56 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void Server::nickCmd1(std::string msg, Client *c)
 void	Server::cmdknick(std::vector<std::string> &words, Client *c)
 {
     Client *tmpClient;
-    if (words.size() != 2 ||  words[1].empty())
+    if (words.size() != 2)
     {
         std::string nickMsg;
         if (words.size() < 2)
@@ -91,7 +91,7 @@ void	Server::cmdknick(std::vector<std::string> &words, Client *c)
         send(c->getFd(), nickMsg.c_str(), nickMsg.length(), 0);
         return ;
     }
-    if (!words[1].empty() && words[2].empty())
+    if (words.size() == 2)
     {
         tmpClient = this->getClientByNickname(words[1]);
         if ((tmpClient && tmpClient->getFd() != c->getFd() && this->IsAuthorized(*tmpClient)) || (tmpClient && !words[1].compare("Bot")))

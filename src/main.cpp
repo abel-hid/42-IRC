@@ -27,13 +27,25 @@ int parssing_port(std::string port)
 	int i = 0;
 	if(std::atoi(port.c_str()) > 65535 || std::atoi(port.c_str()) < 1024)
 		return (0);
-	while (port[i])
-	{
-		if (!isdigit(port[i]))
-			return (0);
-		i++;
-	}
+	for (std::string::iterator it = port.begin(); it != port.end(); it++)
+    {
+        if (!std::isdigit(*it))
+            return (0);
+        i++;
+    }
 	return (1);
+}
+
+bool isValidPassword(std::string password)
+{
+    if (password.empty())
+        return false;
+    for (std::string::iterator it = password.begin(); it != password.end(); it++)
+    {
+        if (!std::isalnum(*it))
+            return false;
+    }
+    return true;
 }
 
 void handl_signal(int signum)
@@ -213,15 +225,21 @@ int main(int ac, char **av)
 {
     if (ac != 3)
 	{
-		std::cout << "Usage: ./ircserv [port] [password]" << std::endl;
+		std::cout << "\033[31;1mUsage: ./ircserv [port] [password]\033[0m 🤬." << std::endl;
 		return 0;
 	}
 	if (!parssing_port(av[1]))
 	{
-		std::cout << "Invalid port" << std::endl;
+		std::cout << "\033[31;1mInvalid port\033[0m 🤬." << std::endl;
 		return 0;
 	}
+    if (!isValidPassword(av[2]))
+    {
+        std::cout << "\033[31;1mInvalid password\033[0m 🤬." << std::endl;
+        return 0;
+    }
 	signal(SIGINT, handl_signal);
+    signal(SIGPIPE, SIG_IGN);
     std::cout << Welcome << std::endl;
 	std::cout<< "\t[\033[32;1mINFO\033[0m] \033[32;1mServer is running on port \033[0m[\033[32;1m" << av[1] << "\033[0m]\n" << std::endl;
     Server server;

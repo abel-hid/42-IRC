@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/ylamsiah/Desktop/irc",
-      "program": "/Users/ylamsiah/Desktop/irc/build/Debug/outDebug"
+      "cwd": "/Users/ylamsiah/Desktop/irc/src",
+      "program": "/Users/ylamsiah/Desktop/irc/src/build/Debug/outDebug"
     }
   ]
 }
