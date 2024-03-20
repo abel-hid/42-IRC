@@ -13,16 +13,18 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
+#define Welcome "\033[33;1m\n\
+░▒▓████████▓▒░▒▓████████▓▒          ░▒▓█▓▒░▒▓███████▓▒░ ░▒▓██████▓▒░  \n\
+░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ \n\
+░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░        \n\
+░▒▓██████▓▒░    ░▒▓█▓▒░    ▒▓███▓▒  ░▒▓█▓▒░▒▓███████▓▒░░▒▓█▓▒░        \n\
+░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░        \n\
+░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ \n\
+░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░  \033[0m\n\n\
+\t\033[36;1mMade By: \033[0m\033[31mylamsiah \033[0m\033[32m| \033[0m\033[35mabel-hid \033[0m\n"
+
 # include "Client.hpp"
 # include "Channels.hpp"
-// # include <iostream>
-// # include <sys/socket.h>
-// # include <netinet/in.h>
-// # include <unistd.h>
-// # include <string>
-// # include <sstream>
-// #include <iostream>
-// # include <map>
 #include <map>
 #include <vector>
 #include <iostream>
@@ -204,6 +206,9 @@ class Server
         void addMode_K(int fd, std::vector<std::string> words, std::map<std::string, Channel *> &Channel, std::string channelname, std::string modeType, bool add);
 
 };
-
+int parssing_port(std::string port);
+std::string update_str(std::string str);
+bool isValidPassword(std::string password);
+void handl_signal(int signum);
 
 #endif

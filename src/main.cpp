@@ -12,50 +12,11 @@
 
 #include "../includes/Server.hpp"
 
-#define Welcome "\033[33;1m\n\
-░▒▓████████▓▒░▒▓████████▓▒          ░▒▓█▓▒░▒▓███████▓▒░ ░▒▓██████▓▒░  \n\
-░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ \n\
-░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░        \n\
-░▒▓██████▓▒░    ░▒▓█▓▒░    ▒▓███▓▒  ░▒▓█▓▒░▒▓███████▓▒░░▒▓█▓▒░        \n\
-░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░        \n\
-░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ \n\
-░▒▓█▓▒░         ░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░  \033[0m\n\n\
-\t\033[36;1mMade By: \033[0m\033[31mylamsiah \033[0m\033[32m| \033[0m\033[35mabel-hid \033[0m\033[32m|\033[0m\033[34m araiteb \033[0m \n"
 
-int parssing_port(std::string port)
+
+
+bool Server::initServer() 
 {
-	int i = 0;
-	if(std::atoi(port.c_str()) > 65535 || std::atoi(port.c_str()) < 1024)
-		return (0);
-	for (std::string::iterator it = port.begin(); it != port.end(); it++)
-    {
-        if (!std::isdigit(*it))
-            return (0);
-        i++;
-    }
-	return (1);
-}
-
-bool isValidPassword(std::string password)
-{
-    if (password.empty())
-        return false;
-    for (std::string::iterator it = password.begin(); it != password.end(); it++)
-    {
-        if (!std::isalnum(*it))
-            return false;
-    }
-    return true;
-}
-
-void handl_signal(int signum)
-{
-	if (signum == SIGINT)
-		std::cout << "\n\033[31;1mServer is shutting down...\033[0m" << std::endl;
-		exit(0);
-}
-
-bool Server::initServer() {
     // Create socket file descriptor
     this->setServer_fd(socket(AF_INET, SOCK_STREAM, 0)); // 0 for TCP and 1 for UDP
     // Check if socket is created
@@ -73,7 +34,7 @@ bool Server::initServer() {
     this->setAddress(address);
     
     // Set socket options
-    if (setsockopt(this->getServer_fd(), SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt)) < 0) {
+    if (setsockopt(this->getServer_fd(), SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
         std::cerr << "Setsockopt failed" << std::endl;
         close(this->getServer_fd());
         return false;
@@ -94,7 +55,7 @@ bool Server::initServer() {
     }
     
     // Listen for connections on a socket
-    if (listen(this->getServer_fd(), 128) < 0) { // 128 is the maximum size of queue connections
+    if (listen(this->getServer_fd(), 5000) < 0) { // 128 is the maximum size of queue connections
         std::cerr << "Listen failed" << std::endl;
         close(this->getServer_fd());
         return false;
@@ -124,22 +85,7 @@ int Server::accept_client()
     << ntohs(client_address.sin_port) << "\033[0m]" << std::endl;
     return client_fd;
 }
-std::string update_str(std::string str)
-{
-    if(str[0] == ':')
-    {
-        size_t space_pos = str.find(" ");
-        if (space_pos != std::string::npos) 
-		{
-            str = str.substr(space_pos + 1);
-        }
-		else
-		{
-			str = "";
-		}
-    }
-    return str;
-}
+
 
 void Server::execute_command(std::string str, int fd)
 {
@@ -158,11 +104,15 @@ void Server::execute_command(std::string str, int fd)
     if(words.size() == 0)
         return ;
 	this->commandsIrc(words, str, fd);
+    words.clear();
+    buffer.clear();
+    word.clear();
 }
 int Server::receve_msg(int fd)
 {
-    char buffer[1024] = {0};
-    ssize_t bytesRead = recv(fd, buffer, sizeof(buffer) - 1, 0);
+    char buffer[4096];
+    memset(buffer, 0, sizeof(buffer));
+    ssize_t bytesRead = recv(fd, buffer, sizeof(buffer) -1, 0);
     if (bytesRead <= 0) 
     {
         // Client disconnected or CTRL+C was pressed
@@ -178,6 +128,7 @@ int Server::receve_msg(int fd)
     else 
     {
         buffer[bytesRead] = '\0';
+        std::cout << "Received: " << buffer << std::endl;
         std::string str = buffer;
 
         size_t newline_pos = str.find_first_of("\r\n");
@@ -205,16 +156,9 @@ int Server::receve_msg(int fd)
                 up[i] = toupper(up[i]);
             up.erase(std::remove(up.begin(), up.end(), '\n'), up.end());
             up.erase(std::remove(up.begin(), up.end(), '\r'), up.end());
-            std::cout << "Received : <<" << tmp1.erase(tmp1.find_first_of("\r\n")) << ">>" << std::endl;
             std::cout << "[\033[33;1mCMD\033[0m] \033[32;1m" << up << "\033[0m \033[33;1mFrom\033[0m [\033[32;1m" << this->get_ip_address(fd) \
             << "\033[0m]\033[0m \033[33;1mFrom port\033[0m [\033[32;1m" << this->getPport(fd) << "\033[0m]" << std::endl;
-            if (str.find_first_of("\r\n") != std::string::npos && str != "\n")
-            {
-                size_t pos = str.find_last_of("\r\n");
-                str = str.substr(0, pos);
-                execute_command(str, fd);
-                return 1;
-            }
+            this->execute_command(str, fd);
         }
     }
     return 1;

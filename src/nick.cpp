@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:00:56 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/20 20:41:56 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/20 21:03:49 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,6 @@ void	Server::cmdknick(std::vector<std::string> &words, Client *c)
             send(c->getFd(), str.c_str(), str.length(), 0);            
             str = ":" + this->get_hostnames() +  " 003 " + this->get_nickname(c->getFd()) + " :This server was created " +  this->get_current_time() + "\r\n";
             send(c->getFd(), str.c_str(), str.length(), 0);
-        }
-        else if(c->getPassword() != this->server_password && this->IsAuthorized(*c))
-        {
-            std::string passMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_PASSWDMISMATCH) + " " + c->getNickname() + " :Password incorrect\r\n";
-            send(c->getFd(), passMsg.c_str(), passMsg.length(), 0);
-            c->setPassword("");
-            return ;
         }
     }
 }
