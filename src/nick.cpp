@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:00:56 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/20 23:46:28 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/21 23:55:03 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,19 @@
 void Server::send_nick(Client *c, std::string nickMsg)
 {
     std::map<std::string, Channel*>::iterator it = this->getChannels().begin();
-    std::vector<int> fds;
-    for (; it != this->getChannels().end(); it++)
+    std::set<int> fds; // Changed from vector to set for efficient duplicate checking
+    int client_fd = c->getFd(); // Store client's file descriptor for reuse
+    for (; it != this->getChannels().end(); ++it)
     {
-        std::set<std::string>::iterator it2 = it->second->getUsers().begin();
-        for (; it2 != it->second->getUsers().end(); it2++)
+        std::set<std::string>& users = it->second->getUsers();
+        for (std::set<std::string>::iterator it2 = users.begin(); it2 != users.end(); ++it2)
         {
             int user = this->get_fd_users(*it2);
-            if (user != c->getFd() && std::find(fds.begin(), fds.end(), user) == fds.end())
+            if (user != client_fd && fds.find(user) == fds.end()) // Checking duplicates efficiently
+            {
                 send(user, nickMsg.c_str(), nickMsg.length(), 0);
-            fds.push_back(user);
+                fds.insert(user);
+            }
         }
     }
 }
@@ -32,32 +35,24 @@ void Server::send_nick(Client *c, std::string nickMsg)
 void Server::users_update(std::string old_nick, std::string new_nick, std::map<std::string, Channel*> channels)
 {
     std::map<std::string, Channel*>::iterator it = channels.begin();
-    for (; it != channels.end(); it++)
+    for (; it != channels.end(); ++it)
     {
-        std::set<std::string>::iterator it2 = it->second->getUsers().begin();
-        for (; it2 != it->second->getUsers().end(); it2++)
+        std::set<std::string>& users = it->second->getUsers();
+        if (users.find(old_nick) != users.end()) // Checking if old_nick exists in the channel
         {
-            if (*it2 == old_nick)
-            {
-                it->second->getUsers().erase(old_nick);
-                it->second->getUsers().insert(new_nick);
-            }
+            users.erase(old_nick);
+            users.insert(new_nick);
         }
-    }
-    std::map<std::string, Channel*>::iterator it3 = channels.begin();
-    for (; it3 != channels.end(); it3++)
-    {
-        std::set<std::string>::iterator it4 = it3->second->getOperators().begin();
-        for (; it4 != it3->second->getOperators().end(); it4++)
+
+        std::set<std::string>& ops = it->second->getOperators();
+        if (ops.find("@" + old_nick) != ops.end()) // Checking if "@old_nick" exists in operators
         {
-            if (*it4 == "@" + old_nick)
-            {
-                it3->second->getOperators().erase(old_nick);
-                it3->second->getOperators().insert("@" + new_nick);
-            }
+            ops.erase("@" + old_nick);
+            ops.insert("@" + new_nick);
         }
     }
 }
+
 
 
 void Server::nickCmd1(std::string msg, Client *c)
