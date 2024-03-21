@@ -3,14 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:00:56 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/20 21:03:49 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/20 23:46:28 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Server.hpp"
+
+void Server::send_nick(Client *c, std::string nickMsg)
+{
+    std::map<std::string, Channel*>::iterator it = this->getChannels().begin();
+    std::vector<int> fds;
+    for (; it != this->getChannels().end(); it++)
+    {
+        std::set<std::string>::iterator it2 = it->second->getUsers().begin();
+        for (; it2 != it->second->getUsers().end(); it2++)
+        {
+            int user = this->get_fd_users(*it2);
+            if (user != c->getFd() && std::find(fds.begin(), fds.end(), user) == fds.end())
+                send(user, nickMsg.c_str(), nickMsg.length(), 0);
+            fds.push_back(user);
+        }
+    }
+}
+
+void Server::users_update(std::string old_nick, std::string new_nick, std::map<std::string, Channel*> channels)
+{
+    std::map<std::string, Channel*>::iterator it = channels.begin();
+    for (; it != channels.end(); it++)
+    {
+        std::set<std::string>::iterator it2 = it->second->getUsers().begin();
+        for (; it2 != it->second->getUsers().end(); it2++)
+        {
+            if (*it2 == old_nick)
+            {
+                it->second->getUsers().erase(old_nick);
+                it->second->getUsers().insert(new_nick);
+            }
+        }
+    }
+    std::map<std::string, Channel*>::iterator it3 = channels.begin();
+    for (; it3 != channels.end(); it3++)
+    {
+        std::set<std::string>::iterator it4 = it3->second->getOperators().begin();
+        for (; it4 != it3->second->getOperators().end(); it4++)
+        {
+            if (*it4 == "@" + old_nick)
+            {
+                it3->second->getOperators().erase(old_nick);
+                it3->second->getOperators().insert("@" + new_nick);
+            }
+        }
+    }
+}
+
 
 void Server::nickCmd1(std::string msg, Client *c)
 {
@@ -58,9 +106,11 @@ void Server::nickCmd1(std::string msg, Client *c)
         else
         {
             nickMsg = ":" + c->getNickname() + "!" + c->getUsername() + "@" + c->getHostname() + " NICK " + words[1] + "\r\n";
+            this->users_update(c->getNickname(), words[1], this->getChannels());
             c->setNickname(words[1]);
         }
         send(c->getFd(), nickMsg.c_str(), nickMsg.length(), 0);
+        this->send_nick(c, nickMsg);
         return ;
     }
     else if (words.size() > 2)

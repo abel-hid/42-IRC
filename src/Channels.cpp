@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channels.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 03:02:59 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/19 02:48:23 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/20 23:44:39 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ bool Channel::isTopicRestriction() { return topicRestriction; }
 
 std::string Channel::getChannelKey() { return channelKey; }
 
-std::set<std::string> Channel::getOperators() { return operators; }
+std::set<std::string> &Channel::getOperators() { return operators; }
 
 void Channel::addOperator(const std::string& user) { operators.insert(user); }
 

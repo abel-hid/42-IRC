@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 03:15:46 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/16 00:43:35 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 01:10:59 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,35 @@
 
 int main(int ac, char **av)
 {
-    
-    if (ac != 3) {
-        std::cerr << "Usage: ./Bot <port> <password>" << std::endl;
-        return -1;
+    if (ac != 3)
+	{
+		std::cout << "\033[31;1mUsage: ./Bot [port] [password]\033[0m 🤬." << std::endl;
+		return 0;
+	}
+	if (!parssing_port(av[1]))
+	{
+		std::cout << "\033[31;1mInvalid port\033[0m 🤬." << std::endl;
+		return 0;
+	}
+    if (!isValidPassword(av[2]))
+    {
+        std::cout << "\033[31;1mInvalid password\033[0m 🤬." << std::endl;
+        return 0;
     }
-    struct sockaddr_in serv_addr;
+    struct sockaddr_in bot_address;
     int port = atoi(av[1]);
     std::string pass = av[2];
     Bot *betbot = new Bot();
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd == -1) {
+    if (sockfd == -1) 
+    {
         std::cerr << "Socket creation failed" << std::endl;
         exit(EXIT_FAILURE);
     }
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(port);
-    serv_addr.sin_addr.s_addr = INADDR_ANY;
-    if ((connect(sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) < 0) {
+    bot_address.sin_family = AF_INET;
+    bot_address.sin_port = htons(port);
+    bot_address.sin_addr.s_addr = INADDR_ANY;
+    if ((connect(sockfd, (struct sockaddr*)&bot_address, sizeof(bot_address))) < 0) {
         std::cout << "Connection Failed  " << std::endl;;
         return -1;
     }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 02:50:50 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/16 01:19:38 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 01:15:41 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ void Bot::ConnetToServer(int fd, std::string &pass)
             close(fd);
             break ;
         }
-        this->traitResvedData(message, fd);
+        this->executeBot(message, fd);
     }
 }

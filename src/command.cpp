@@ -6,7 +6,7 @@
 /*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 03:00:11 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/19 02:02:04 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/20 22:36:37 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ void	Server::commandsIrc(std::vector <std::string> &words, std::string str, int 
     
     if (!this->IsAuthorized(*c))
     {
-        if (!words[0].compare("PASS"))
+        if (words[0] == "PASS")
             cmdpass(words, c ,str);
-        else if (!words[0].compare("NICK") && !c->getPassword().empty())
+        else if (words[0] == "NICK" && c->getPassword() ==  this->server_password)
             cmdknick(words, c );
-        else if (!words[0].compare("USER") && !c->getPassword().empty())
+        else if (words[0] == "USER" && c->getPassword() ==  this->server_password)
             cmduser(c, words , str);
         else 
         {
-            std::string nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_NOTREGISTERED) + " " + c->getNickname() + " :You have not registered\r\n";
+            std::string nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_NOTREGISTERED) + " " + words[0] + " :You have not registered\r\n";
             send(c->getFd(), nickMsg.c_str(), nickMsg.length(), 0);
             return ;
         }

@@ -85,7 +85,7 @@ class Channel
         bool isInviteOnly();
         bool isTopicRestriction();
         std::set<std::string> &getUsers();
-        std::set<std::string> getOperators() ;
+        std::set<std::string> &getOperators() ;
         bool isOperator(const std::string& nickname);
         bool isUser(const std::string& nickname);
         long getLimit();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bot.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 02:50:47 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/16 00:43:42 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 01:15:41 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,15 @@ class Bot  {
         Bot& operator=(Bot &b);
         void    ConnetToServer(int , std::string &);
         void    setStudent_13(std::map<std::string, float> Student_13);
-        void 	traitResvedData(std::string &msg, int client_fd);
+        void 	executeBot(std::string &msg, int client_fd);
         void 	sendResponce(int fd, const std::string &responce);
         std::string     comdBot(std::vector<std::string> &words);
-        std::string   returntime();
+        std::string get_current_time();
         std::map<std::string, float> getStudent_13();
         std::map<std::string, float> first_read(std::string file);
         
 };
-void	split(std::string msg, std::vector<std::string> &SplitedMsg);
-void    splitCommand(std::string str, char oper, std::vector<std::string> &SplitedMsg);
+int parssing_port(std::string port);
+bool isValidPassword(std::string password);
+
 #endif

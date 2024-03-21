@@ -3,16 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   command_bot.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 06:21:49 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/18 02:47:22 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 01:15:41 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bot.hpp"
 
-std::string Bot::returntime()
+int parssing_port(std::string port)
+{
+	int i = 0;
+	if(std::atoi(port.c_str()) > 65535 || std::atoi(port.c_str()) < 1024)
+		return (0);
+	for (std::string::iterator it = port.begin(); it != port.end(); it++)
+    {
+        if (!std::isdigit(*it))
+            return (0);
+        i++;
+    }
+	return (1);
+}
+
+std::string update_str(std::string str)
+{
+    if(str[0] == ':')
+    {
+        size_t space_pos = str.find(" ");
+        if (space_pos != std::string::npos) 
+		{
+            str = str.substr(space_pos + 1);
+        }
+		else
+		{
+			str = "";
+		}
+    }
+    return str;
+}
+
+
+bool isValidPassword(std::string password)
+{
+    if (password.empty())
+        return false;
+    for (std::string::iterator it = password.begin(); it != password.end(); it++)
+    {
+        if (!std::isalnum(*it))
+            return false;
+    }
+    return true;
+}
+
+std::string Bot::get_current_time()
 {
     time_t now = time(0);
     struct tm tstruct;
@@ -77,7 +121,7 @@ std::string Bot::comdBot(std::vector<std::string> &words)
     }
 }
 
-void 	Bot::traitResvedData(std::string &msg, int client_fd)
+void 	Bot::executeBot(std::string &msg, int client_fd)
 {
     char message[1548];
     std::cout << msg;
@@ -111,7 +155,7 @@ void 	Bot::traitResvedData(std::string &msg, int client_fd)
     }
     else if (!words[3].empty() && !words[3].compare(":time") && words.size() == 4)
     {
-        std::string mssg = "🤖: " + sender + " " + "time "+ " " + this->returntime();
+        std::string mssg = "🤖: " + sender + " " + "time "+ " " + this->get_current_time();
         sprintf(message, "%s\r\n", mssg.c_str());
         sendResponce(client_fd, message);
     }

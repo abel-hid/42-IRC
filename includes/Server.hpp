@@ -204,7 +204,8 @@ class Server
         void addMode_T(std::map<std::string, Channel *> &Channel, std::string channelname, std::string modeType, bool add);
         void addMode_L(int fd, std::vector<std::string> words, std::map<std::string, Channel *> &Channel, std::string channelname, std::string modeType, bool add);
         void addMode_K(int fd, std::vector<std::string> words, std::map<std::string, Channel *> &Channel, std::string channelname, std::string modeType, bool add);
-
+        void send_nick(Client *c, std::string nickMsg);
+        void users_update(std::string old_nick, std::string new_nick, std::map<std::string, Channel*> channels);
 };
 int parssing_port(std::string port);
 std::string update_str(std::string str);
