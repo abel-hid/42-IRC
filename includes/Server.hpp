@@ -209,6 +209,5 @@ void                                        handl_signal(int signum);
 std::string                                 update_str(std::string str);
 bool                                        parsingInput(int ac, char **av);
 int                                         parssing_port(std::string port);
-bool                                        isValidPassword(std::string password);
 
 #endif

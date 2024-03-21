@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:48:02 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 20:17:38 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 22:21:59 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@ bool parsingInput(int ac, char **av)
 		std::cout << "\033[31;1mInvalid port\033[0m 🤬." << std::endl;
 		return false;
 	}
-    if (!isValidPassword(av[2]))
-    {
-        std::cout << "\033[31;1mInvalid password\033[0m 🤬." << std::endl;
-        return false;
-    }
     return true;
 }
 
@@ -62,17 +57,3 @@ std::string update_str(std::string str)
     }
     return str;
 }
-
-
-bool isValidPassword(std::string password)
-{
-    if (password.empty())
-        return false;
-    for (std::string::iterator it = password.begin(); it != password.end(); it++)
-    {
-        if (!std::isalnum(*it))
-            return false;
-    }
-    return true;
-}
-
