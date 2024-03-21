@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 01:40:02 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 17:53:58 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 23:18:47 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,13 +242,6 @@ int Server::JoinChannel(std::vector<std::string > strs , std::string nickname, i
                 it++;
             }
         }
-    }
-    // print pairs
-    std::vector<std::pair<std::string, std::string> >::iterator it = pair.begin();
-    while(it != pair.end())
-    {
-        std::cout << it->first << " " << it->second << std::endl;
-        it++;
     }
     handleChannels(pair, fd, nickname);
     channels.clear();
