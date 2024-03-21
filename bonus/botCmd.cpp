@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_bot.cpp                                    :+:      :+:    :+:   */
+/*   botCmd.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/10 06:21:49 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/21 01:15:41 by abel-hid         ###   ########.fr       */
+/*   Created: 2024/03/21 19:48:54 by ylamsiah          #+#    #+#             */
+/*   Updated: 2024/03/21 19:53:05 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,7 @@ bool isValidPassword(std::string password)
     return true;
 }
 
-std::string Bot::get_current_time()
-{
-    time_t now = time(0);
-    struct tm tstruct;
-    char buf[80];
-    tstruct = *localtime(&now);
-    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
-    return (buf);
-}
 
-void 	Bot::sendResponce(int fd, const std::string &responce)
-{
-	send(fd, responce.c_str(), responce.length(), 0);
-}
 
 std::map<std::string, float> Bot::first_read(std::string file)
 {

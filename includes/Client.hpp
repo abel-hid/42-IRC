@@ -6,9 +6,11 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 17:41:59 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 02:15:50 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:45:37 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#pragma once
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP

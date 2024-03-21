@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 02:08:17 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 02:54:15 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:54:50 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -373,7 +373,7 @@ void Server::modecmd(std::string str, int fd)
         if (words.size() == 2 && this->getChannels().find(words[1]) != this->getChannels().end())
         {
             std::map<std::string, Channel *>::iterator it = this->getChannels().find(words[1]);
-            if (it != this->getChannels().end()) // Ensure the channel exists in the map
+            if (it != this->getChannels().end())
             {
                 std::string msg = std::string(it->second->getInviteOnly() ? "i" : "") + (it->second->isTopicRestriction() ? "t" : "") + (!it->second->getChannelKey().empty() ? "k" : "") + (it->second->getLimit() == -1 ? "" : "l");
                 std::string errorMode = ":" + this->get_hostnames() + " 324 " + this->get_nickname(fd) + " " + words[1] + (msg.empty() ? "" : " +" + msg) + " \r\n";

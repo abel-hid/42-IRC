@@ -18,13 +18,13 @@ O_DIR   := OBJ_DER
 B_DIR	:= OBJ_DER_BONUS
 
 SRCS = $(addprefix src/, main.cpp invite.cpp topic.cpp mode.cpp part.cpp kick.cpp join.cpp privmsg.cpp \
-	quit.cpp command.cpp utils.cpp Bot.cpp nick.cpp pass.cpp user.cpp Client.cpp Server.cpp Channels.cpp )
+	quit.cpp methodes.cpp utils.cpp Bot.cpp nick.cpp pass.cpp user.cpp Client.cpp Server.cpp Channels.cpp )
 
 M_SRCS =  $(SRCS)
 
 M_OBJS = $(patsubst %.cpp,$(O_DIR)/%.o,$(M_SRCS))
 
-BONUS = $(addprefix bonus/, Bot.cpp command_bot.cpp main_bonus.cpp)
+BONUS = $(addprefix bonus/, Bot.cpp botCmd.cpp Bonus.cpp)
 
 B_SRCS = $(BONUS)
 

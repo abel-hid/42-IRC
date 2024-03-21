@@ -3,67 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   Bot.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/10 02:50:47 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/21 01:15:41 by abel-hid         ###   ########.fr       */
+/*   Created: 2024/03/21 19:50:38 by ylamsiah          #+#    #+#             */
+/*   Updated: 2024/03/21 19:53:09 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # pragma once
+
 #ifndef BOT_HPP
-#define BOT_HPP
+# define BOT_HPP
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/ioctl.h>
-#include <sys/poll.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <netinet/in.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <cstring>
-#include <fcntl.h>
-#include <cstddef> 
-#include <sstream>
-#include <map>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <iomanip>
-#include <arpa/inet.h>
+# include <map>
+# include <vector>
+# include <stdio.h>
+# include <errno.h>
+# include <fstream>
+# include <iomanip>
+# include <cstring>
+# include <fcntl.h>
+# include <cstddef> 
+# include <sstream>
+# include <iostream>
+# include <stdlib.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <string.h>
+# include <sys/poll.h>
+# include <sys/time.h>
+# include <arpa/inet.h>
+# include <sys/ioctl.h>
+# include <sys/socket.h>
+# include <netinet/in.h>
 
-class Bot  {
+class Bot
+{
     private:
-        std::string name;
-        std::string nickname;
-        std::string username;
-        std::string fullname;
-        std::string servername;
-        std::string hostname;
-
-        std::map<std::string, float> Student_13;
-		std::string allstring;
-
+        std::string                     name;
+        std::string                     nickName;
+        std::string                     userName;
+        std::string                     fullName;
+        std::string                     hostName;
+		std::string                     allstring;
+        std::string                     serverName;
+        std::map<std::string, float>    Student_13;
     public:
+        // CONSTRUCTOR & DESTRUCTOR
         Bot();
         ~Bot();
-        Bot(Bot &b);
-        Bot& operator=(Bot &b);
-        void    ConnetToServer(int , std::string &);
-        void    setStudent_13(std::map<std::string, float> Student_13);
-        void 	executeBot(std::string &msg, int client_fd);
-        void 	sendResponce(int fd, const std::string &responce);
-        std::string     comdBot(std::vector<std::string> &words);
-        std::string get_current_time();
-        std::map<std::string, float> getStudent_13();
-        std::map<std::string, float> first_read(std::string file);
+        
+        // SETTERS FUNCTIONS
+        void                            setStudent_13(std::map<std::string, float> Student_13);
+        
+        // GETTERS FUNCTIONS
+        std::string                     get_current_time();
+        std::map<std::string, float>    getStudent_13();
+        
+        // BOT FUNCTIONS
+        void 	                        executeBot(std::string &msg, int client_fd);
+        std::string                     comdBot(std::vector<std::string> &words);
+
+        // UTILS FUNCTIONS
+        std::map<std::string, float>    first_read(std::string file);
+        void                            ConnetToServer(int , std::string &);
+        void 	                        sendResponce(int fd, const std::string &responce);
         
 };
-int parssing_port(std::string port);
-bool isValidPassword(std::string password);
+int                                     parssing_port(std::string port);
+bool                                    isValidPassword(std::string password);
 
 #endif

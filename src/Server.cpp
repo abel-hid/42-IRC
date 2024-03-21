@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 12:39:59 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 02:51:58 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:52:27 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 // CONSTRUCTOR & DESTRUCTOR
 
-Server::Server()
+Server::Server(): port(6667), server_fd(0), new_socket(0)
 {
-            this->port = 6667;
-            this->server_fd = 0;
-            this->new_socket = 0;
-            this->address.sin_family = AF_INET;
-            this->address.sin_addr.s_addr = INADDR_ANY;
-            this->address.sin_port = htons(this->port);
+    this->address.sin_family = AF_INET;
+    this->address.sin_addr.s_addr = INADDR_ANY;
+    this->address.sin_port = htons(this->port);
 }
 
 Server::~Server()

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.cpp                                        :+:      :+:    :+:   */
+/*   methodes.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/25 03:00:11 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/21 02:55:49 by ylamsiah         ###   ########.fr       */
+/*   Created: 2024/03/21 19:51:28 by ylamsiah          #+#    #+#             */
+/*   Updated: 2024/03/21 19:51:33 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,3 @@ void	Server::commandsIrc(std::vector <std::string> &words, std::string str, int 
             this->modecmd(str, c->getFd());
     }
 }
-
-

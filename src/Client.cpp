@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:33:02 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 02:35:13 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:59:56 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,57 +14,39 @@
 
 // CONSTRUCTOR & DESTRUCTOR
 
-Client::Client()
+Client::Client() : fd(0), password(""), nickname(""), username(""), realname(""), hostname(""), servername(""), ip_address(""), is_registered(0)
 {
-    this->fd = 0;
-    this->password = "";
-    this->nickname = "";
-    this->username = "";
-    this->realname = "";
-    this->hostname = "";
-    this->servername = "";
     this->InviteToChannel = false;
-    this->ip_address = "";
-    this->is_registered = 0;
 }
 
-Client::Client(int fd)
+Client::Client(int fd): fd(fd), password(""), nickname(""), username(""), realname(""), hostname(""), servername(""), ip_address(""), is_registered(0)
 {
-    this->fd = fd;
-    this->password = "";
-    this->nickname = "";
-    this->username = "";
-    this->realname = "";
-    this->hostname = "";
-    this->servername = "";
     this->InviteToChannel = false;
-    this->ip_address = "";
-    this->is_registered = 0;
 }
 
 Client::~Client() {}
 
 // GETTERS FUNCTIONS
 
-int Client::getFd() { return (this->fd); }
+int Client::getFd() { return this->fd; }
 
-std::string Client::getHostname() { return (this->hostname); }
+std::string Client::getHostname() { return this->hostname; }
 
-std::string Client::getPassword() { return (this->password); }
+std::string Client::getPassword() { return this->password; }
 
-std::string Client::getNickname() { return (this->nickname); }
+std::string Client::getNickname() { return this->nickname; }
 
-std::string Client::getUsername() { return (this->username); }
+std::string Client::getUsername() { return this->username; }
 
-std::string Client::getRealname() { return (this->realname); }
+std::string Client::getRealname() { return this->realname; }
 
-std::vector<std::string> Client::getStr() { return (this->str); }
+std::vector<std::string> Client::getStr() { return this->str; }
 
-std::string Client::getipaddress() { return (this->ip_address); }
+std::string Client::getipaddress() { return this->ip_address; }
 
-std::string Client::getServername() { return (this->servername); }
+std::string Client::getServername() { return this->servername; }
 
-bool Client::getInviteToChannel() { return (this->InviteToChannel); }
+bool Client::getInviteToChannel() { return this->InviteToChannel; }
 
 // SETTERS FUNCTIONS
 
@@ -94,4 +76,4 @@ void Client::setInviteToChannel(bool InviteToChannel) { this->InviteToChannel = 
 
 void Client::clearStr() { this->str.clear(); }
 
-int Client::is_Registered() { return (this->is_registered); }
+int Client::is_Registered() { return this->is_registered; }

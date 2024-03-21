@@ -60,7 +60,6 @@ bool Server::initServer()
     return true;
 }
 
-
 int Server::accept_client()
 {
     sockaddr_in client_address;

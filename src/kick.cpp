@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 01:01:38 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 02:36:11 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:54:06 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
             send(fd, error_message.c_str(), error_message.length(), 0);
             continue;
         }
-        
         for(std::vector<std::string>::iterator it1 = users.begin(); it1 != users.end(); it1++)
         {
             // Check if the user is an operator and in the channel

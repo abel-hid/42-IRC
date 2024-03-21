@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 04:50:39 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 02:38:42 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:55:14 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void Server::send_to_user(std::string nickname , std::string str ,int fd)
     int user = this->get_fd_users(nickname);
     send(user, message.c_str(), message.length(), 0);
 }
-
 
 void Server::privmsg_command(std::vector<std::string > words  , int fd , std::string str)
 {

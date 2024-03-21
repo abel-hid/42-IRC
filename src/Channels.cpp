@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 03:02:59 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 02:29:01 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:59:16 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,12 @@
 
 // CONSTRUCTOR & DESTRUCTOR
 
-Channel::Channel(const std::string& channelName, const std::string& channelTopic, const std::string& channelPassword, bool creater)
+Channel::Channel(const std::string& channelName, const std::string& channelTopic, const std::string& channelPassword, bool creater): name(channelName), topic(channelTopic), creater(creater)
 {
-    name = channelName;
-    topic = channelTopic;
-    password = channelPassword;
-    inviteOnly = false;
-    topicRestriction = false;
-    this->creater = creater;
-    limit = -1;
+    this->password = channelPassword;
+    this->inviteOnly = false;
+    this->topicRestriction = false;
+    this->limit = -1;
 }
 
 Channel::~Channel() {}
@@ -35,42 +32,42 @@ void Channel::set_creater(bool creater){ this->creater = creater; }
 
 void Channel::set_topic(const std::string& topic) { this->topic = topic; }
 
-void Channel::setChannelKey(const std::string& key) { channelKey = key; }
+void Channel::setChannelKey(const std::string& key) { this->channelKey = key; }
 
-void Channel::setInviteOnly(bool isInviteOnly) { inviteOnly = isInviteOnly; }
+void Channel::setInviteOnly(bool isInviteOnly) { this->inviteOnly = isInviteOnly; }
 
-void Channel::setChannelName(const std::string& channelName) { name = channelName; }
+void Channel::setChannelName(const std::string& channelName) { this->name = channelName; }
 
-void Channel::setChannelTopic(const std::string& channelTopic) { topic = channelTopic; }
+void Channel::setChannelTopic(const std::string& channelTopic) { this->topic = channelTopic; }
 
-void Channel::setChannelPassword(const std::string& channelPassword) { password = channelPassword; }
+void Channel::setChannelPassword(const std::string& channelPassword) { this->password = channelPassword; }
 
-void Channel::setTopicRestriction(bool isTopicRestriction) { topicRestriction = isTopicRestriction; }
+void Channel::setTopicRestriction(bool isTopicRestriction) { this->topicRestriction = isTopicRestriction; }
 
 
 // GETTERS FUNCTIONS
 
 long Channel::getLimit() { return this->limit; }
 
-bool Channel::get_creater() { return (creater); }
+bool Channel::get_creater() { return this->creater; }
 
-std::string Channel::get_topic(){ return (topic); }
-
-
-bool Channel::getInviteOnly() { return inviteOnly; }
-
-std::string Channel::getChannelName() { return name; }
-
-std::string Channel::getChannelTopic() { return topic; }
-
-std::string Channel::getChannelKey() { return channelKey; }
-
-std::set<std::string> &Channel::getUsers() { return users; }
-
-std::string Channel::getChannelPassword() { return password; }
+std::string Channel::get_topic(){ return this->topic; }
 
 
-std::set<std::string> &Channel::getOperators() { return operators; }
+bool Channel::getInviteOnly() { return this->inviteOnly; }
+
+std::string Channel::getChannelName() { return this->name; }
+
+std::string Channel::getChannelTopic() { return this->topic; }
+
+std::string Channel::getChannelKey() { return this->channelKey; }
+
+std::set<std::string> &Channel::getUsers() { return this->users; }
+
+std::string Channel::getChannelPassword() { return this->password; }
+
+
+std::set<std::string> &Channel::getOperators() { return this->operators; }
 
 std::string Channel::get_creator_name()
 {
@@ -103,13 +100,13 @@ void Channel::removeLimit() { this->limit = -1; }
 
 void Channel::removeChannelKey() { this->channelKey = ""; }
 
-void Channel::addUser(const std::string& user) { users.insert(user); }
+void Channel::addUser(const std::string& user) { this->users.insert(user); }
 
-void Channel::removeUser(const std::string& user) { users.erase(user); }
+void Channel::removeUser(const std::string& user) { this->users.erase(user); }
 
-void Channel::addOperator(const std::string& user) { operators.insert(user); }
+void Channel::addOperator(const std::string& user) { this->operators.insert(user); }
 
-void Channel::removeOperator(const std::string& user) { operators.erase(user); }
+void Channel::removeOperator(const std::string& user) { this->operators.erase(user); }
 
 void Channel::quit_channel(std::string nickname)
 {

@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 01:40:02 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 02:36:49 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:53:58 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,6 @@ void Server::handleChannels(std::vector<std::pair<std::string, std::string> >& p
     pairs.clear();
 }
 
-		
 int Server::JoinChannel(std::vector<std::string > strs , std::string nickname, int fd , std::string str)
 { 
     // pair of channel and key

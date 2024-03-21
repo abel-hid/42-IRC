@@ -3,56 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   Bot.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/10 02:50:50 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/21 01:15:41 by abel-hid         ###   ########.fr       */
+/*   Created: 2024/03/21 19:50:06 by ylamsiah          #+#    #+#             */
+/*   Updated: 2024/03/21 19:53:12 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "Bot.hpp"
 
-Bot::Bot()
+// CONSTRUCTOR & DESTRUCTOR
+Bot::Bot(): name("BetBot"), nickName("Bot"), userName("betbot1"), fullName("dd")
 {
-    this->name = "BetBot";
-    this->nickname = "Bot";
-    this->username = "betbot1";
-    this->fullname = "dd";
-    this->servername = "localhost";
-    this->hostname = "localhost";
+    this->serverName = "irc.1337.ma";
+    this->hostName = "irc.1337.ma";
 }
 
 Bot::~Bot() {}
 
-Bot& Bot::operator=(Bot &b)
-{
-    this->name = b.name;
-    this->nickname = b.nickname;
-    this->username = b.username;
-    this->fullname = b.fullname;
-    this->servername = b.servername;
-    this->hostname = b.hostname;
-    return *this;
-}
-
-Bot::Bot(Bot &b) { *this = b; }
-
+// SETTERS FUNCTIONS
 void    Bot::setStudent_13(std::map<std::string, float> Student_13) { this->Student_13 = Student_13;}
 
+
+// GETTERS FUNCTIONS
 std::map<std::string, float> Bot::getStudent_13() { return (this->Student_13);}
 
-void Bot::ConnetToServer(int fd, std::string &pass)
+std::string Bot::get_current_time()
+{
+    time_t now = time(0);
+    struct tm tstruct;
+    char buf[80];
+    tstruct = *localtime(&now);
+    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+    return (buf);
+}
+
+// UTILS FUNCTIONS
+
+void    Bot::sendResponce(int fd, const std::string &responce) { send(fd, responce.c_str(), responce.length(), 0); }
+
+void    Bot::ConnetToServer(int fd, std::string &pass)
 {
     char message[1024];
     sleep(1);
     sprintf(message, "PASS %s\r\n", pass.c_str());
     send(fd, message, strlen(message), 0);
     sleep(1);
-    sprintf(message, "USER %s * * :%s\r\n", this->username.c_str(), this->fullname.c_str());
+    sprintf(message, "USER %s * * :%s\r\n", this->userName.c_str(), this->fullName.c_str());
     send(fd, message, strlen(message), 0);
     sleep(1);
-    sprintf(message, "NICK %s\r\n", this->nickname.c_str());
+    sprintf(message, "NICK %s\r\n", this->nickName.c_str());
     send(fd, message, strlen(message), 0);
     sleep(1);
     while (true) 
