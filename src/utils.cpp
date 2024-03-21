@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:48:02 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/20 20:50:13 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:55:21 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ bool isValidPassword(std::string password)
 void handl_signal(int signum)
 {
 	if (signum == SIGINT)
-		std::cout << "\n\033[31;1mServer is shutting down...\033[0m" << std::endl;
+	{
+        std::cout << "\n\033[31;1mServer is shutting down...\033[0m" << std::endl;
 		exit(0);
+    }
 }

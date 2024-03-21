@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:01:59 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/19 01:45:55 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:52:09 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	Server::cmduser(Client *c, std::vector<std::string> &words , std::string str)
 {
-    
 	if (words.size() < 5)
 	{
         std::string userMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_NEEDMOREPARAMS) + " USER :Not enough parameters\r\n";

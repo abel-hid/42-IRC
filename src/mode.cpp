@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 02:08:17 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 02:37:22 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:54:15 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,27 +38,27 @@ int getNumMode(std::string mode)
     int i = 0;
     while (i < (int)mode.length())
     {
-        if (mode[i] == '+') // Fixed the condition
+        if (mode[i] == '+')
         {
             int j = i + 1;
-            while (j < (int)mode.length() && (mode[j] != '+' && mode[j] != '-')) // Fixed the condition
+            while (j < (int)mode.length() && (mode[j] != '+' && mode[j] != '-'))
             {
                 if (mode[j] == 'o' || mode[j] == 'k' || mode[j] == 'l')
                     sum++;
-                j++; // Increment j here
+                j++;
             }
-            i = j; // Update i to j after inner loop
+            i = j;
         }
         if (mode[i] == '-')
         {
             int j = i + 1;
-            while (j < (int)mode.length() && (mode[j] != '+' && mode[j] != '-')) // Fixed the condition
+            while (j < (int)mode.length() && (mode[j] != '+' && mode[j] != '-'))
             {
                 if (mode[j] == 'o' || mode[j] == 'k')
                     sum++;
-                j++; // Increment j here
+                j++;
             }
-            i = j; // Update i to j after inner loop
+            i = j;
         }
         else
             i++;

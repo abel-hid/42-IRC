@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 03:00:11 by araiteb           #+#    #+#             */
-/*   Updated: 2024/03/21 02:35:24 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:55:49 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void Server::join_topic_part_kick_privmsg(int fd , std::string str)
 {
-     std::string buffer = str;
-    
+    std::string buffer = str;
     buffer.erase(std::remove(buffer.begin(), buffer.end(), '\n'), buffer.end());
     buffer.erase(std::remove(buffer.begin(), buffer.end(), '\r'), buffer.end());
     if(buffer.empty())

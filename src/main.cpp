@@ -15,49 +15,48 @@
 bool Server::initServer() 
 {
     // Create socket file descriptor
-    this->setServer_fd(socket(AF_INET, SOCK_STREAM, 0)); // 0 for TCP and 1 for UDP
+    this->setServer_fd(socket(AF_INET, SOCK_STREAM, 0));
     // Check if socket is created
-    if (this->getServer_fd() == -1) {
+    if (this->getServer_fd() == -1)
+    {
         std::cerr << "Socket failed" << std::endl;
         return false;
     }
-    
     int opt = 1;
     struct sockaddr_in address;
     // Set address family
-    address.sin_family = AF_INET; // AF_INET is the address family for IPv4
-    address.sin_addr.s_addr = INADDR_ANY; // INADDR_ANY means any address for binding
-    address.sin_port = htons(this->getPort()); // htons() converts port number to network byte order
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;
+    address.sin_port = htons(this->getPort());
     this->setAddress(address);
-    
     // Set socket options
-    if (setsockopt(this->getServer_fd(), SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) {
+    if (setsockopt(this->getServer_fd(), SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0) 
+    {
         std::cerr << "Setsockopt failed" << std::endl;
         close(this->getServer_fd());
         return false;
     }
-    
     // Set non-blocking mode
-    if (fcntl(this->getServer_fd(), F_SETFD, O_NONBLOCK) < 0) {
+    if (fcntl(this->getServer_fd(), F_SETFD, O_NONBLOCK) < 0)
+    {
         std::cerr << "Fcntl failed" << std::endl;
         close(this->getServer_fd());
         return false;
     }
-    
     // Bind socket to address
-    if (bind(this->getServer_fd(), reinterpret_cast<struct sockaddr *>(&address), sizeof(address)) < 0) {
+    if (bind(this->getServer_fd(), reinterpret_cast<struct sockaddr *>(&address), sizeof(address)) < 0)
+    {
         std::cerr << "Bind failed" << std::endl;
         close(this->getServer_fd());
         return false;
     }
-    
     // Listen for connections on a socket
-    if (listen(this->getServer_fd(), 5000) < 0) { // 128 is the maximum size of queue connections
+    if (listen(this->getServer_fd(), 5000) < 0) 
+    {
         std::cerr << "Listen failed" << std::endl;
         close(this->getServer_fd());
         return false;
     }
-    
     return true;
 }
 
@@ -83,7 +82,6 @@ int Server::accept_client()
     return client_fd;
 }
 
-
 void Server::execute_command(std::string str, int fd)
 {
     std::string buffer = str;
@@ -105,6 +103,7 @@ void Server::execute_command(std::string str, int fd)
     buffer.clear();
     word.clear();
 }
+
 int Server::receve_msg(int fd)
 {
     char buffer[4096];
@@ -127,7 +126,6 @@ int Server::receve_msg(int fd)
         buffer[bytesRead] = '\0';
         std::cout << "Received: " << buffer << std::endl;
         std::string str = buffer;
-
         size_t newline_pos = str.find_first_of("\r\n");
         if (newline_pos == std::string::npos)
         {
@@ -165,7 +163,6 @@ int Server::receve_msg(int fd)
         }
     }
     return 1;
-
 }
 
 int main(int ac, char **av)
