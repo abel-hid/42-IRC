@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:56:43 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 20:41:07 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 21:05:26 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ int Server::receve_msg(int fd)
         std::cout << "[\033[31;1mINFO\033[0m] \033[31;1mClient Disconnected\033[0m" << std::endl;
 		send(fd, "\033[31;1mYou are Disconnected 😞.\r\n\033[0m", 40, 0);
         this->remove_client_from_channels(fd);
+        delete this->clients[fd];
         this->removeClient(fd);
-        this->clients.erase(fd);
         close(fd);
         return -1;
     } 
