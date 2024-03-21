@@ -71,8 +71,10 @@ class Server
         ~Server();
 
         // SERVER FUNCTIONS
+        void                                runServer(bool &close_ser);
         bool                                initServer();
         int                                 accept_client();
+        void                                close_all();
         int                                 receve_msg(int fd);
         void                                addClient(int fd, Client *client);
         void                                addChannel(std::string name, Channel *channel);
@@ -82,7 +84,6 @@ class Server
         //UTILS FUNCTIONS
         std::string                         to_string(int number);
 		void                                comdBotBot(std::string str);
-        void                                priny_users(std::string channel);
         void                                remove_client_from_channels(int fd);
 
         // USER && PASS FUNCTIONS
@@ -206,6 +207,7 @@ class Server
 };
 void                                        handl_signal(int signum);
 std::string                                 update_str(std::string str);
+bool                                        parsingInput(int ac, char **av);
 int                                         parssing_port(std::string port);
 bool                                        isValidPassword(std::string password);
 

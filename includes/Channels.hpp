@@ -100,7 +100,6 @@ class Channel
         bool                    isOperator(const std::string& nickname);
 
         // UTILS FUNCTIONS
-        void                    print_users();
         void                    removeLimit();
         void                    removeChannelKey();
         void                    quit_channel(std::string nickname);

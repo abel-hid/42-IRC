@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 21:09:08 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 02:38:11 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 20:08:15 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int Server::PartChannel(std::vector<std::string> strs, std::map<std::string, Cha
     }
     else
         reason = strs[2];
-    std::cout << "Reason: " << reason << std::endl;
     for (std::vector<std::string>::iterator it = all_channels.begin(); it != all_channels.end(); ++it) 
     {
         std::string channel_name = *it;
@@ -88,7 +87,6 @@ int Server::PartChannel(std::vector<std::string> strs, std::map<std::string, Cha
             send(fd, msg.c_str(), msg.length(), 0);
             continue;
         }
-        // channel->print_users();
         if(reason.empty())
             msg = ":" + nickname + "!" + this->get_username(fd) + "@" + this->get_ip_address(fd) + " PART " + channel_name + "\r\n";
         else

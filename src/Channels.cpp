@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 03:02:59 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 17:59:16 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 20:07:55 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,14 +116,4 @@ void Channel::quit_channel(std::string nickname)
         operators.erase(nickname);
     if(creater == true)
         creater = false;
-}
-
-void Channel::print_users()
-{
-    std::set<std::string>::iterator it = users.begin();
-    while(it != users.end())
-    {
-        std::cout << *it << std::endl;
-        it++;
-    }
 }

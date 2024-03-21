@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 12:39:59 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 17:52:27 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 20:07:22 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,14 +414,6 @@ std::string Server::to_string(int number)
     std::stringstream ss;
     ss << number;
     return (ss.str());
-}
-
-void Server::priny_users(std::string channel)
-{
-    std::map<std::string, Channel *>::iterator it;
-    it = this->channels.find(channel);
-    if(it != this->channels.end())
-        channels[channel]->print_users();
 }
 
 void Server::remove_client_from_channels(int fd)
