@@ -12,9 +12,6 @@
 
 #include "../includes/Server.hpp"
 
-
-
-
 bool Server::initServer() 
 {
     // Create socket file descriptor
@@ -158,7 +155,13 @@ int Server::receve_msg(int fd)
             up.erase(std::remove(up.begin(), up.end(), '\r'), up.end());
             std::cout << "[\033[33;1mCMD\033[0m] \033[32;1m" << up << "\033[0m \033[33;1mFrom\033[0m [\033[32;1m" << this->get_ip_address(fd) \
             << "\033[0m]\033[0m \033[33;1mFrom port\033[0m [\033[32;1m" << this->getPport(fd) << "\033[0m]" << std::endl;
-            this->execute_command(str, fd);
+            if (str.find_first_of("\r\n") != std::string::npos)
+            {
+                size_t pos = str.find_last_of("\r\n");
+                str = str.substr(0, pos);
+                this->execute_command(str, fd);
+                return 1;
+            }
         }
     }
     return 1;

@@ -6,11 +6,12 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:02:31 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/19 02:42:49 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:02:06 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Server.hpp"
+
 void Server::comdBotBot(std::string SplitedMsg)
 {
     std::string buffer = SplitedMsg;

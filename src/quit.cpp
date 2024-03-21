@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 11:56:01 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/19 01:34:13 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:38:59 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Server.hpp"
 
-
 void Server::send_to_all(std::string str, int fd)
 {
-   std::map<std::string, Channel*>::iterator it = this->getChannels().begin();
-   std::vector<int> fds;
+    std::map<std::string, Channel*>::iterator it = this->getChannels().begin();
+    std::vector<int> fds;
     for (; it != this->getChannels().end(); it++)
     {
         std::set<std::string>::iterator it2 = it->second->getUsers().begin();

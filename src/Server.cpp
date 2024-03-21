@@ -1,34 +1,102 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   methods.cpp                                        :+:      :+:    :+:   */
+/*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 12:39:59 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/19 01:49:33 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:41:47 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Server.hpp"
 
-std::string Server::to_string(int number)
+// CONSTRUCTOR & DESTRUCTOR
+
+Server::Server()
 {
-    std::stringstream ss;
-    ss << number;
-    return (ss.str());
+            this->port = 6667;
+            this->server_fd = 0;
+            this->new_socket = 0;
+            this->address.sin_family = AF_INET;
+            this->address.sin_addr.s_addr = INADDR_ANY;
+            this->address.sin_port = htons(this->port);
 }
-int Server::is_nickname_exist_and_registered(int fd, std::string nickname)
+
+Server::~Server()
 {
     std::map<int, Client *>::iterator it;
     for (it = this->clients.begin(); it != this->clients.end(); it++)
     {
-        if (it->second->getNickname() == nickname && it->second->is_Registered() && it->first != fd)
-            return (1);
+        delete it->second;
     }
-    return (0);
+    this->clients.clear();
+    std::map<std::string, Channel *>::iterator it2;
+    for (it2 = this->channels.begin(); it2 != this->channels.end(); it2++)
+    {
+        delete it2->second;
+    }
+    this->channels.clear();
 }
 
+// GETTERS FUNCTIONS
+
+int Server::getPort() const { return port;}
+
+bool Server::getFlagMode() { return flagMode;}
+
+int Server::getPport(int fd) { return pport[fd]; }
+
+int Server::getServer_fd() const { return server_fd;}
+
+int Server::getNew_socket() const { return new_socket;}
+
+sockaddr_in Server::getAddress() const { return address;}
+
+std::string &Server::get_allstring() { return allstring; }
+
+std::string Server::getServerPassword() {return this->server_password; }
+
+std::map<std::string, Channel *> &Server::getChannels() { return (this->channels); }
+
+long Server::get_limit(std::string channel)
+{
+    std::map<std::string, Channel *>::iterator it;
+    it = this->channels.find(channel);
+    if(it != this->channels.end())
+        return (channels[channel]->getLimit());
+    return (-1);
+}
+
+std::string Server::get_nickname(int fd)
+{
+    std::map<int, Client *>::iterator it;
+    it = this->clients.find(fd);
+    if(it != this->clients.end())
+        return (clients[fd]->getNickname());
+    return ("");
+}
+
+std::string Server::get_hostname(int fd)
+{
+    std::map<int, Client *>::iterator it;
+    it = this->clients.find(fd);
+    if(it != this->clients.end())
+        return (clients[fd]->getHostname());
+    return ("");
+} 
+
+int Server::get_fd_users(const std::string& nickname) const
+{
+    std::map<int, Client *>::const_iterator it;
+    for (it = this->clients.begin(); it != this->clients.end(); it++)
+    {
+        if (it->second->getNickname() == nickname)
+            return (it->first);
+    }
+    return (-1);
+}
 std::string Server::get_hostnames()
 {
     char buffer[1024] = {0};
@@ -46,14 +114,23 @@ std::string Server::get_hostnames()
     return (hostnames);
 }
 
-std::string Server::get_nickname(int fd)
-{
-    std::map<int, Client *>::iterator it;
-    it = this->clients.find(fd);
-    if(it != this->clients.end())
-        return (clients[fd]->getNickname());
-    return ("");
-}
+// SETTERS FUNCTIONS
+
+void Server::setPort(int port) { this->port = port;}
+
+void Server::setFlagMode(bool flag)  { flagMode = flag; }
+
+void Server::setPport(int fd, int port) { pport[fd] = port; }
+
+void Server::set_allstring(std::string str) { allstring = str; }
+
+void Server::setServer_fd(int server_fd) { this->server_fd = server_fd;}
+
+void Server::setAddress(sockaddr_in address) { this->address = address;}
+
+void Server::setNew_socket(int new_socket) { this->new_socket = new_socket;}
+
+void Server::setServerPassword(std::string password) { this->server_password = password; }
 
 void Server::set_nickname(int fd, std::string nickname)
 {
@@ -63,38 +140,26 @@ void Server::set_nickname(int fd, std::string nickname)
         clients[fd]->setNickname(nickname);
 }
 
-std::map<std::string, Channel *> &Server::getChannels()
-{
-    return (this->channels);
-}
 
-long Server::get_limit(std::string channel)
-{
-    std::map<std::string, Channel *>::iterator it;
-    it = this->channels.find(channel);
-    if(it != this->channels.end())
-        return (channels[channel]->getLimit());
-    return (-1);
-}
 
-int Server::get_fd_users(const std::string& nickname) const
+
+
+std::string Server::to_string(int number)
 {
-    std::map<int, Client *>::const_iterator it;
-    for (it = this->clients.begin(); it != this->clients.end(); it++)
-    {
-        if (it->second->getNickname() == nickname)
-            return (it->first);
-    }
-    return (-1);
+    std::stringstream ss;
+    ss << number;
+    return (ss.str());
 }
-std::string Server::get_hostname(int fd)
+int Server::is_nickname_exist_and_registered(int fd, std::string nickname)
 {
     std::map<int, Client *>::iterator it;
-    it = this->clients.find(fd);
-    if(it != this->clients.end())
-        return (clients[fd]->getHostname());
-    return ("");
-} 
+    for (it = this->clients.begin(); it != this->clients.end(); it++)
+    {
+        if (it->second->getNickname() == nickname && it->second->is_Registered() && it->first != fd)
+            return (1);
+    }
+    return (0);
+}
 int Server::is_nickname_exist_and_registered(std::string nickname)
 {
     std::map<int, Client *>::iterator it;
@@ -255,11 +320,11 @@ void Server::remove_client_from_channels(int fd)
 {
     std::string str =  ":" + this->get_nickname(fd) + "!" + this->get_username(fd) + "@" + this->get_ip_address(fd) + " QUIT : QUIT Leaving...\r\n";
     this->send_to_all(str, fd);
+
     std::map<std::string, Channel *>::iterator it;
     for (it = this->channels.begin(); it != this->channels.end(); it++)
-    {
         it->second->quit_channel(this->get_nickname(fd));
-    }
+
     it = this->channels.begin();
     while(it != this->channels.end())
     {
@@ -269,9 +334,7 @@ void Server::remove_client_from_channels(int fd)
             this->channels.erase(it++);
         }
         else
-        {
             it++;
-        }
     }
 }
 
@@ -311,23 +374,14 @@ std::string Server::get_password(int fd)
         return (clients[fd]->getPassword());
     return ("");
 }
-std::map<int, Client *> &Server::getClients()
-{
-    return (this->clients);
-}
-void Server::addClient(int fd, Client *client)
-{
-    this->clients[fd] = client;
-}
-void Server::removeClient(int fd)
-{
-    this->clients.erase(fd);
-}
+std::map<int, Client *> &Server::getClients() { return (this->clients); }
 
-void Server::setClients(std::map<int, Client *> clients)
-{
-    this->clients = clients;
-}
+void Server::addClient(int fd, Client *client) { this->clients[fd] = client; }
+
+void Server::removeClient(int fd) { this->clients.erase(fd); }
+
+void Server::setClients(std::map<int, Client *> clients) { this->clients = clients; }
+
 std::string Server::get_users(std::string channel)
 {
     std::map<std::string, Channel *>::iterator it;

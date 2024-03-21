@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 02:08:17 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/19 01:38:07 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:37:22 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void Server::addMode_I(std::map<std::string, Channel *> &channel, std::string ch
 
 void Server::addMode_T(std::map<std::string, Channel *> &channel, std::string channelname, std::string modeType, bool add)
 {
-
     for (std::map<std::string, Channel *>::iterator it = channel.begin(); it != channel.end(); it++)
     {
         if (it->first == channelname)
@@ -131,7 +130,6 @@ void Server::addMode_T(std::map<std::string, Channel *> &channel, std::string ch
 
 void Server::addMode_O(int fd, std::vector<std::string> words,std::map<std::string, Channel *> &channel, std::string channelname, std::string modeType, bool add)
 {
-
     if (words.size() < 4)
     {
         std::string errorMode = ":" + this->get_hostnames() + " 461 "  + words[0] + " : Not enough parameters\r\n" ;
@@ -218,7 +216,6 @@ void Server::addMode_O(int fd, std::vector<std::string> words,std::map<std::stri
 
 void Server::addMode_L(int fd, std::vector<std::string> words,std::map<std::string, Channel *> &channel, std::string channelname, std::string modeType, bool add)
 {
-    
     if (add)
     {
         if (words.size() < 4)
@@ -239,7 +236,6 @@ void Server::addMode_L(int fd, std::vector<std::string> words,std::map<std::stri
             return ;
         }
     }
-    
     for (std::map<std::string, Channel *>::iterator it = channel.begin(); it != channel.end(); it++)
     {
         if (it->first == channelname)
@@ -285,7 +281,6 @@ void Server::addMode_L(int fd, std::vector<std::string> words,std::map<std::stri
 
 void Server::addMode_K(int fd, std::vector<std::string> words, std::map<std::string, Channel *> &channel, std::string channelname, std::string modeType, bool add)
 {
-  
     if (words.size() < 4)
     {
         std::string errorMode = ":" + this->get_hostnames() + " 461 "  + words[0] + " : Not enough parameters\r\n";

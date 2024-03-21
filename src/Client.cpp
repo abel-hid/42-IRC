@@ -6,11 +6,13 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 00:33:02 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/20 20:53:57 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:35:13 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Client.hpp"
+
+// CONSTRUCTOR & DESTRUCTOR
 
 Client::Client()
 {
@@ -40,121 +42,56 @@ Client::Client(int fd)
     this->is_registered = 0;
 }
 
-Client::~Client()
-{
-}
+Client::~Client() {}
 
-std::string Client::getPassword()
-{
-    return (this->password);
-}
+// GETTERS FUNCTIONS
 
-std::string Client::getNickname()
-{
-    return (this->nickname);
-}
+int Client::getFd() { return (this->fd); }
 
-std::string Client::getUsername()
-{
-    return (this->username);
-}
+std::string Client::getHostname() { return (this->hostname); }
 
-std::string Client::getRealname()
-{
-    return (this->realname);
-}
+std::string Client::getPassword() { return (this->password); }
 
-int Client::getFd()
-{
-    return (this->fd);
-}
+std::string Client::getNickname() { return (this->nickname); }
 
-std::string Client::getHostname()
-{
-    return (this->hostname);
-}
+std::string Client::getUsername() { return (this->username); }
 
-std::string Client::getServername()
-{
-    return (this->servername);
-}
+std::string Client::getRealname() { return (this->realname); }
 
-std::string Client::getipaddress()
-{
-    return (this->ip_address);
-}
+std::vector<std::string> Client::getStr() { return (this->str); }
 
-void Client::set_ip_address(std::string ip)
-{
-    this->ip_address = ip;
-}
+std::string Client::getipaddress() { return (this->ip_address); }
 
-void Client::clearStr()
-{
-    this->str.clear();
-}
+std::string Client::getServername() { return (this->servername); }
 
-void Client::setStr(std::string str)
-{
-    this->str.push_back(str);
-}
+bool Client::getInviteToChannel() { return (this->InviteToChannel); }
 
-std::vector<std::string> Client::getStr()
-{
-    return (this->str);
-}
+// SETTERS FUNCTIONS
 
-void Client::setNickname(std::string nickname)
-{
-    this->nickname = nickname;
-}
+void Client::setFd(int fd) { this->fd = fd; }
 
-void Client::setServername(std::string servername)
-{
-    this->servername = servername;
-}
+void Client::setStr(std::string str) { this->str.push_back(str); }
 
-void Client::setRealname(std::string realname)
-{
-    this->realname = realname;
-}
+void Client::set_ip_address(std::string ip) { this->ip_address = ip; }
 
-void Client::setUsername(std::string username)
-{
-    this->username = username;
-}
+void Client::setNickname(std::string nickname) { this->nickname = nickname; }
 
-void Client::setPassword(std::string password)
-{
-    this->password = password;
-}
+void Client::setRealname(std::string realname) { this->realname = realname; }
 
-void Client::setFd(int fd)
-{
-    this->fd = fd;
-}
+void Client::setUsername(std::string username) { this->username = username; }
 
-void Client::setHostname(std::string hostname)
-{
-    this->hostname = hostname;
-}
+void Client::setPassword(std::string password) { this->password = password; }
 
-int Client::is_Registered()
-{
-    return (this->is_registered);
-}
+void Client::setHostname(std::string hostname) { this->hostname = hostname; }
 
-void Client::set_is_Registered(int is_registered)
-{
-    this->is_registered = is_registered;
-}
+void Client::setServername(std::string servername) { this->servername = servername; }
 
-void Client::setInviteToChannel(bool InviteToChannel)
-{
-    this->InviteToChannel = InviteToChannel;
-}
+void Client::set_is_Registered(int is_registered) { this->is_registered = is_registered; }
 
-bool Client::getInviteToChannel()
-{
-    return (this->InviteToChannel);
-}
+void Client::setInviteToChannel(bool InviteToChannel) { this->InviteToChannel = InviteToChannel; }
+
+// UTILS FUNCTIONS
+
+void Client::clearStr() { this->str.clear(); }
+
+int Client::is_Registered() { return (this->is_registered); }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 01:40:02 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/20 23:41:01 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:36:49 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void Server::join_command(std::vector<std::string > words  , int fd , std::strin
 
 void Server::join_broadcast_msg(std::map<std::string, Channel*>& channels , std::string msg , std::string channelName)
 {
-
     std::map<std::string, Channel*>::iterator it = channels.find(channelName);
     if (it != channels.end()) 
     {
@@ -47,7 +46,6 @@ void Server::join_broadcast_msg(std::map<std::string, Channel*>& channels , std:
 
 int Server::public_channel(std::string channel_name , std::string key , int fd)
 {
-
     std::map<std::string, Channel*>::iterator it2 = channels.find(channel_name);
     if (it2 != channels.end() && it2->second->isUser(this->get_nickname(fd))) 
     {
@@ -63,8 +61,6 @@ int Server::public_channel(std::string channel_name , std::string key , int fd)
         send(fd, msg.c_str(), msg.length(), 0);
         return (1);
     }
-    
-
     // limit the number of channels a user can join
     if(this->get_limit(channel_name) != -1 && (size_t)this->get_limit(channel_name) <= channels[channel_name]->getUsers().size())
     {
@@ -72,7 +68,6 @@ int Server::public_channel(std::string channel_name , std::string key , int fd)
         send(fd, msg.c_str(), msg.length(), 0);
         return (1);
     }
-
     if (it2 == channels.end()) 
     {
         // Channel doesn't exist, create it
@@ -83,11 +78,9 @@ int Server::public_channel(std::string channel_name , std::string key , int fd)
         if(!key.empty())
             newChannel->setChannelKey(key); // Set the channel key
         channels[channel_name] = newChannel; // Add the channel to the map
-
         // reply to the user
         std::string msg = ":" + this->get_nickname(fd) + "!" + this->get_username(fd) + "@" + this->get_ip_address(fd) + " JOIN " + channel_name + "\r\n";
         send(fd, msg.c_str(), msg.length(), 0);
-
         msg = ":" + this->get_hostnames() + " 313 " + this->get_nickname(fd) + " " + channel_name + " :" + this->get_topic(channel_name) + "\r\n";
         send(fd, msg.c_str(), msg.length(), 0);
         
@@ -105,11 +98,9 @@ int Server::public_channel(std::string channel_name , std::string key , int fd)
             // broadcast to all users in the channel
             std::string msg = ":" + this->get_nickname(fd) + "!" + this->get_username(fd) + "@" + this->get_ip_address(fd) + " JOIN " + channel_name + "\r\n";
             join_broadcast_msg(channels, msg, channel_name);
-
             // add user to the channel
             it2->second->addUser(this->get_nickname(fd));
             send(fd, msg.c_str(), msg.length(), 0);
-
             // reply to the user
             std::string str;
             if (this->get_topic(channel_name) == "No topic is set")
@@ -134,7 +125,6 @@ int Server::public_channel(std::string channel_name , std::string key , int fd)
                 send(fd, str.c_str(), str.length(), 0);
                 it3++;
             }
-
             str = ":" + this->get_hostnames() + " " + this->to_string(RPL_ENDOFNAMES) + " " + this->get_nickname(fd) + " " + channel_name + " :End of /NAMES list\r\n";
             send(fd, str.c_str(), str.length(), 0);
             str.clear();
@@ -192,7 +182,6 @@ int Server::JoinChannel(std::vector<std::string > strs , std::string nickname, i
     std::vector<std::string> keys;
     std::vector<std::pair<std::string, std::string> > pair;
     std::stringstream ss(strs[1]);
-
     if (strs.size() >= 3) 
     {
         if(!strs[2].empty() && strs[2].at(0) == ':')
@@ -223,7 +212,6 @@ int Server::JoinChannel(std::vector<std::string > strs , std::string nickname, i
             keys.push_back(strs[2]);
         }
     }
-   
     if(strs[1].find(',') != std::string::npos) 
     {
         std::string token;
@@ -237,7 +225,6 @@ int Server::JoinChannel(std::vector<std::string > strs , std::string nickname, i
     {
         channels.push_back(strs[1]);
     }
-
     if (channels.size() > 0) 
     {
         std::vector<std::string>::iterator it = channels.begin();

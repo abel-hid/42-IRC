@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 04:50:39 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/19 01:34:13 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/21 02:38:42 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,18 @@ void Server::privmsg_command(std::vector<std::string > words  , int fd , std::st
         send(fd, str.c_str(), str.length(), 0);
         return ;
     }
-    
     if(words.size() == 1)
     {
         std::string str = ":" + this->get_hostnames() + " " + this->to_string(ERR_NORECIPIENT) + " " + this->get_nickname(fd) + " :No recipient given (PRIVMSG)\r\n";
         send(fd, str.c_str(), str.length(), 0);
         return ;
     }
-    
     if(words.size() == 2)
     {
         std::string str = ":" + this->get_hostnames() + " " + this->to_string(ERR_NOTEXTTOSEND) + " " + this->get_nickname(fd) + " " + words[1] + " :No text to send\r\n";
         send(fd, str.c_str(), str.length(), 0);
         return ;
     }
-    
     std::string message = "";
     if(words.size() > 3 && words[2].at(0) == ':')
     {
@@ -76,7 +73,6 @@ void Server::privmsg_command(std::vector<std::string > words  , int fd , std::st
     {
         message = words[2];
     }
-    
     std::vector<std::string> targets;
     if(words[1].find(',') != std::string::npos) 
     {
@@ -93,10 +89,8 @@ void Server::privmsg_command(std::vector<std::string > words  , int fd , std::st
     {
         targets.push_back(words[1]);
     }
-    
     for (std::vector<std::string>::iterator it = targets.begin(); it != targets.end(); it++)
     {
-
         if(it->at(0) == '#' || it->at(0) == '&')
         {
             if(this->getChannels().find(*it) != this->getChannels().end() && this->getChannels()[*it]->getUsers().find(this->get_nickname(fd)) != this->getChannels()[*it]->getUsers().end())
