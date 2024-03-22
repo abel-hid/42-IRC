@@ -6,7 +6,7 @@
 /*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:56:43 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/22 01:28:55 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:29:48 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool Server::initServer()
         close(this->getServer_fd());
         return false;
     }
-    if (fcntl(this->getServer_fd(), F_SETFD, O_NONBLOCK) < 0)
+    if (fcntl(this->getServer_fd(), F_SETFL, O_NONBLOCK) < 0)
     {
         std::cerr << "Fcntl failed" << std::endl;
         close(this->getServer_fd());
