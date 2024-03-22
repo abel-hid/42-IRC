@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/05 01:01:38 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 17:54:06 by ylamsiah         ###   ########.fr       */
+/*   Created: 2024/03/22 00:25:47 by abel-hid          #+#    #+#             */
+/*   Updated: 2024/03/22 00:25:49 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Server.hpp"
-
 void Server::kick_command(std::vector<std::string > words  , int fd , std::string str)
 {
+
     if(words.size() == 1)
     {
         std::string str = ":" + this->get_hostnames() + " " + this->to_string(ERR_NEEDMOREPARAMS) + " " + words[0] + " :Not enough parameters\r\n";
@@ -41,6 +41,8 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
         send(fd, error_message.c_str(), error_message.length(), 0);
         return;
     }
+
+
     std::vector<std::string> kick_channel;
     std::vector<std::string> users;
     std::string reason;
@@ -61,6 +63,7 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
     {
         kick_channel.push_back(strs[1]);
     }
+    
     if(strs[2].find(',') != std::string::npos) 
     {
         std::stringstream ss(strs[2]);
@@ -86,6 +89,7 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
     }
     else
         reason = strs[3];
+
     // Check if the channel exists
     for(std::vector<std::string>::iterator it = kick_channel.begin(); it != kick_channel.end(); it++)
     {
@@ -102,6 +106,7 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
             send(fd, error_message.c_str(), error_message.length(), 0);
             continue;
         }
+        
         for(std::vector<std::string>::iterator it1 = users.begin(); it1 != users.end(); it1++)
         {
             // Check if the user is an operator and in the channel
@@ -128,6 +133,7 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
                 message = ":" + nickname + "!" + this->get_username(fd) + "@" + this->get_ip_address(fd) + " KICK " + *it + " " + *it1 + "\r\n";
             else
                 message = ":" + nickname + "!" + this->get_username(fd) + "@" + this->get_ip_address(fd) + " KICK " + *it + " " + *it1 + " :" + reason + "\r\n";
+
             // Send the message to the user
             std::set<std::string>::iterator it2 = channels[*it]->getUsers().begin();
             while (it2 != channels[*it]->getUsers().end())
