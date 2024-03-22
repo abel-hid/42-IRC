@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Creat_Server.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:56:43 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 21:05:26 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/22 00:46:17 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ int Server::receve_msg(int fd)
                 up[i] = toupper(up[i]);
             up.erase(std::remove(up.begin(), up.end(), '\n'), up.end());
             up.erase(std::remove(up.begin(), up.end(), '\r'), up.end());
+            std::cout << "Received: " << str << "\n";
             std::cout << "[\033[33;1mCMD\033[0m] \033[32;1m" << up << "\033[0m \033[33;1mFrom\033[0m [\033[32;1m" << this->get_ip_address(fd) \
             << "\033[0m]\033[0m \033[33;1mFrom port\033[0m [\033[32;1m" << this->getPport(fd) << "\033[0m]" << std::endl;
             if (str.find_first_of("\r\n") != std::string::npos)

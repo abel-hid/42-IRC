@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 12:39:59 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 20:07:22 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/22 00:57:51 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -419,11 +419,44 @@ std::string Server::to_string(int number)
 void Server::remove_client_from_channels(int fd)
 {
     std::string str =  ":" + this->get_nickname(fd) + "!" + this->get_username(fd) + "@" + this->get_ip_address(fd) + " QUIT : QUIT Leaving...\r\n";
-    this->send_to_all(str, fd);
+    std::map<std::string, Channel *>::iterator it1;
+    std::vector<int> fds;
+    for (it1 = this->channels.begin(); it1 != this->channels.end(); it1++)
+    {
+        if(it1->second->getUsers().find(this->get_nickname(fd)) != it1->second->getUsers().end())
+        {
+            it1->second->getUsers().erase(this->get_nickname(fd));
+            it1->second->getOperators().erase("@" + this->get_nickname(fd));
+            if(it1->second->get_creator_name() == this->get_nickname(fd))
+                it1->second->set_creater(false);
+            std::set<std::string>::iterator it2 = it1->second->getUsers().begin();
+            while(it2 != it1->second->getUsers().end())
+            {
+                int user = this->get_fd_users(*it2);
+                if (user != fd && std::find(fds.begin(), fds.end(), user) == fds.end())
+                    send(user, str.c_str(), str.length(), 0);
+                it2++;
+                fds.push_back(user);
+            }
+        }
+    }
 
     std::map<std::string, Channel *>::iterator it;
     for (it = this->channels.begin(); it != this->channels.end(); it++)
-        it->second->quit_channel(this->get_nickname(fd));
+    {
+        if(it->second->getUsers().find(this->get_nickname(fd)) != it->second->getUsers().end())
+        {
+            it->second->getUsers().erase(this->get_nickname(fd));
+            it->second->getOperators().erase("@" + this->get_nickname(fd));
+            if(it->second->get_creator_name() == this->get_nickname(fd))
+                it->second->set_creater(false);
+            if(it->second->getUsers().size() == 0)
+            {
+                delete it->second;
+                this->channels.erase(it);
+            }
+        }
+    }
 
     it = this->channels.begin();
     while(it != this->channels.end())

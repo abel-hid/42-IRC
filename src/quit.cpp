@@ -6,7 +6,7 @@
 /*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 11:56:01 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/22 00:32:24 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/22 00:46:40 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ void Server::send_to_all(std::string str, int fd)
 void Server::quit_command(int fd)
 {
     this->remove_client_from_channels(fd);
-    this->removeClient(fd);
     delete this->clients[fd];
-    this->clients.erase(fd);
+    this->removeClient(fd);
     close(fd);
 }
