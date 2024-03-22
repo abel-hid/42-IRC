@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   botCmd.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:48:54 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 19:53:05 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:47:33 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,6 @@ std::string update_str(std::string str)
     }
     return str;
 }
-
-
-bool isValidPassword(std::string password)
-{
-    if (password.empty())
-        return false;
-    for (std::string::iterator it = password.begin(); it != password.end(); it++)
-    {
-        if (!std::isalnum(*it))
-            return false;
-    }
-    return true;
-}
-
-
 
 std::map<std::string, float> Bot::first_read(std::string file)
 {

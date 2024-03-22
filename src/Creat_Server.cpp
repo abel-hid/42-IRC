@@ -6,7 +6,7 @@
 /*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:56:43 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/22 01:29:48 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:45:36 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int Server::accept_client()
     this->addClient(client_fd, new Client(client_fd));
     std::string add = inet_ntoa(client_address.sin_addr);
     this->clients[client_fd]->set_ip_address(add);
-    this->pport[client_fd] = ntohs(client_address.sin_port);
     this->setPport(client_fd, ntohs(client_address.sin_port));
     std::cout << "\n[\033[32;1mINFO\033[0m] \033[33;1mNew client connected with ip address\033[0m [\033[32;1m" << add << \
     "\033[0m] \033[33;1mFrom port\033[0m [\033[32;1m" << ntohs(client_address.sin_port) << "\033[0m]" << std::endl;

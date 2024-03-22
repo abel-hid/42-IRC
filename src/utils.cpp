@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:48:02 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 22:21:59 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:45:58 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool parsingInput(int ac, char **av)
 int parssing_port(std::string port)
 {
 	int i = 0;
-	if(std::atoi(port.c_str()) > 65535 || std::atoi(port.c_str()) < 1024)
+	if(std::atoi(port.c_str()) > 65535 || std::atoi(port.c_str()) < 1024 || port.size() > 5)
 		return (0);
 	for (std::string::iterator it = port.begin(); it != port.end(); it++)
     {
