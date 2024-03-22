@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 11:56:01 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 02:38:59 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/22 00:32:24 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,19 @@ void Server::send_to_all(std::string str, int fd)
     std::vector<int> fds;
     for (; it != this->getChannels().end(); it++)
     {
-        std::set<std::string>::iterator it2 = it->second->getUsers().begin();
-        for (; it2 != it->second->getUsers().end(); it2++)
+        std::string nickname = this->get_nickname(fd);
+        std::set<std::string>::iterator it2 = it->second->getUsers().find(nickname);
         {
-            int user = this->get_fd_users(*it2);
-            if (user != fd && std::find(fds.begin(), fds.end(), user) == fds.end())
-                send(user, str.c_str(), str.length(), 0);
-            fds.push_back(user);
+            if (it2 != it->second->getUsers().end())
+            {
+                for (; it2 != it->second->getUsers().end(); it2++)
+                {
+                    int user = this->get_fd_users(*it2);
+                    if (user != fd && std::find(fds.begin(), fds.end(), user) == fds.end())
+                        send(user, str.c_str(), str.length(), 0);
+                    fds.push_back(user);
+                }
+            }
         }
     }
     fds.clear();
