@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:00:56 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 23:55:03 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/22 00:10:04 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 void Server::send_nick(Client *c, std::string nickMsg)
 {
     std::map<std::string, Channel*>::iterator it = this->getChannels().begin();
-    std::set<int> fds; // Changed from vector to set for efficient duplicate checking
-    int client_fd = c->getFd(); // Store client's file descriptor for reuse
+    std::set<int> fds; 
+    int client_fd = c->getFd();
     for (; it != this->getChannels().end(); ++it)
     {
         std::set<std::string>& users = it->second->getUsers();
         for (std::set<std::string>::iterator it2 = users.begin(); it2 != users.end(); ++it2)
         {
             int user = this->get_fd_users(*it2);
-            if (user != client_fd && fds.find(user) == fds.end()) // Checking duplicates efficiently
+            if (user != client_fd && fds.find(user) == fds.end())
             {
                 send(user, nickMsg.c_str(), nickMsg.length(), 0);
                 fds.insert(user);
@@ -38,22 +38,19 @@ void Server::users_update(std::string old_nick, std::string new_nick, std::map<s
     for (; it != channels.end(); ++it)
     {
         std::set<std::string>& users = it->second->getUsers();
-        if (users.find(old_nick) != users.end()) // Checking if old_nick exists in the channel
+        if (users.find(old_nick) != users.end())
         {
             users.erase(old_nick);
             users.insert(new_nick);
         }
-
         std::set<std::string>& ops = it->second->getOperators();
-        if (ops.find("@" + old_nick) != ops.end()) // Checking if "@old_nick" exists in operators
+        if (ops.find("@" + old_nick) != ops.end())
         {
             ops.erase("@" + old_nick);
             ops.insert("@" + new_nick);
         }
     }
 }
-
-
 
 void Server::nickCmd1(std::string msg, Client *c)
 {
