@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   methodes.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:51:28 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 19:51:33 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/22 19:35:56 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,10 @@ void	Server::commandsIrc(std::vector <std::string> &words, std::string str, int 
             this->invitecmd(str, c->getFd());
         else if (!words[0].compare("MODE"))
             this->modecmd(str, c->getFd());
+        else
+        {
+            std::string nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_UNKNOWNCOMMAND) + " " + words[0] + " :Unknown command\r\n";
+            send(c->getFd(), nickMsg.c_str(), nickMsg.length(), 0);
+        }
     }
 }
