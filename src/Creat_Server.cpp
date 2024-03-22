@@ -6,7 +6,7 @@
 /*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:56:43 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/22 00:46:17 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/22 01:28:55 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,12 @@ int Server::accept_client()
         std::cout << "Accept failed" << std::endl;
         return -1;
     }
-    fcntl(client_fd, F_SETFD, O_NONBLOCK);
+    if(fcntl(client_fd, F_SETFL, O_NONBLOCK) < 0)
+    {
+        std::cerr << "Fcntl failed" << std::endl;
+        close(client_fd);
+        return -1;
+    }
     this->addClient(client_fd, new Client(client_fd));
     std::string add = inet_ntoa(client_address.sin_addr);
     this->clients[client_fd]->set_ip_address(add);
@@ -103,7 +108,6 @@ int Server::receve_msg(int fd)
     ssize_t bytesRead = recv(fd, buffer, sizeof(buffer) -1, 0);
     if (bytesRead <= 0) 
     {
-        // Client disconnected or CTRL+C was pressed
         std::cout << "[\033[31;1mINFO\033[0m] \033[31;1mClient Disconnected\033[0m" << std::endl;
 		send(fd, "\033[31;1mYou are Disconnected 😞.\r\n\033[0m", 40, 0);
         this->remove_client_from_channels(fd);
@@ -141,7 +145,6 @@ int Server::receve_msg(int fd)
                 up[i] = toupper(up[i]);
             up.erase(std::remove(up.begin(), up.end(), '\n'), up.end());
             up.erase(std::remove(up.begin(), up.end(), '\r'), up.end());
-            std::cout << "Received: " << str << "\n";
             std::cout << "[\033[33;1mCMD\033[0m] \033[32;1m" << up << "\033[0m \033[33;1mFrom\033[0m [\033[32;1m" << this->get_ip_address(fd) \
             << "\033[0m]\033[0m \033[33;1mFrom port\033[0m [\033[32;1m" << this->getPport(fd) << "\033[0m]" << std::endl;
             if (str.find_first_of("\r\n") != std::string::npos)
