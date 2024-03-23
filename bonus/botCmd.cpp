@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   botCmd.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:48:54 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/22 01:47:33 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/23 01:09:28 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int parssing_port(std::string port)
 {
 	int i = 0;
+    if (port.empty())
+        return (0);
 	if(std::atoi(port.c_str()) > 65535 || std::atoi(port.c_str()) < 1024)
 		return (0);
 	for (std::string::iterator it = port.begin(); it != port.end(); it++)

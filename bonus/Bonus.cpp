@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Bonus.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 17:43:05 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/22 01:47:41 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/23 01:10:20 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ int main(int ac, char **av)
 		std::cout << "\033[31;1mInvalid port\033[0m 🤬." << std::endl;
 		return 0;
 	}
+    if (std::strlen(av[2]) < 1)
+    {
+        std::cout << "\033[31;1mInvalid password\033[0m 🤬." << std::endl;
+        return 0;
+    }
     struct sockaddr_in bot_address;
     int port = atoi(av[1]);
     std::string pass = av[2];

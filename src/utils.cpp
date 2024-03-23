@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:48:02 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/22 01:45:58 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/23 01:08:18 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ bool parsingInput(int ac, char **av)
 	if (!parssing_port(av[1]))
 	{
 		std::cout << "\033[31;1mInvalid port\033[0m 🤬." << std::endl;
+		return false;
+	}
+	if (std::strlen(av[2]) < 1)
+	{
+		std::cout << "\033[31;1mInvalid password\033[0m 🤬." << std::endl;
 		return false;
 	}
     return true;
