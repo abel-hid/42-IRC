@@ -6,7 +6,7 @@
 /*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:01:29 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/19 01:47:31 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/24 23:17:14 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ void	Server::cmdpass(std::vector<std::string>& words, Client *c , std::string st
             send(c->getFd(), passMsg.c_str(), passMsg.length(), 0);
             return ;
         }
-        if(words.size() > 2 && words[1].at(0) == ':')
+        if(words.size() >= 2 && words[1].at(0) == ':')
         {
-            pass = str.substr(str.find(":") + 1 , str.length());
+            str = str.erase(0, str.find(words[0]) + words[0].length() + 1);
+            str.erase(0 ,str.find_first_of(":") + 1);
+            pass = str;
         }
         else
             pass = words[1];
