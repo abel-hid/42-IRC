@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:48:02 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/25 00:01:46 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/25 21:28:29 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool parsingInput(int ac, char **av)
 	}
 	if (!parssing_port(av[1]))
 	{
-		std::cout << "\033[31;1mInvalid port\033[0m 🤬." << std::endl;
+		std::cout << "\033[31;1mInvalid port number\033[0m 🤬." << std::endl;
 		return false;
 	}
 	if (std::strlen(av[2]) < 1)

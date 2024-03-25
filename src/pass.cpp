@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:01:29 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/24 23:45:26 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:08:36 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	Server::cmdpass(std::vector<std::string>& words, Client *c , std::string str)
 {
+    str.erase(std::remove(str.begin(), str.end(), '\n'), str.end());
+    str.erase(std::remove(str.begin(), str.end(), '\r'), str.end());
 	if (words.size() < 2 || (words.size() > 2 && words[1].at(0) != ':'))
 	{
         std::string passMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_NEEDMOREPARAMS) + " PASS :Not enough parameters\r\n";
@@ -41,9 +43,15 @@ void	Server::cmdpass(std::vector<std::string>& words, Client *c , std::string st
             str.erase(0 ,str.find_first_of(":") + 1);
             pass = str;
         }
+        else if(words.size() >= 2 && words[1].at(0) == ':' && (this->server_password.find(":") != std::string::npos))
+        {
+            pass = words[1];
+        }
         else
             pass = words[1];
 		c->setPassword(pass);
+        std::cout << "server_password = " << this->server_password << "." << std::endl;
+        std::cout << "pass = " << pass << "." << std::endl;
         if(c->getPassword() != this->server_password)
         {
             std::string passMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_PASSWDMISMATCH) + " PASS :Password incorrect\r\n";

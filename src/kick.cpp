@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 00:25:47 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/25 00:44:20 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:08:12 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Server.hpp"
+
 void Server::kick_command(std::vector<std::string > words  , int fd , std::string str)
 {
 
@@ -81,16 +82,21 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
     }
     reason.clear();
     reason = "";
-    if(strs.size() > 3 && strs[3].at(0) == ':')
+    if(strs.size() > 3)
     {
-        str = str.erase(0, str.find(strs[0]) + strs[0].length() + 1);
-        str = str.erase(0, str.find(strs[1]) + strs[1].length() + 1);
-        str = str.erase(0, str.find(strs[2]) + strs[2].length() + 1);
-        reason = str.erase(0,1);
+        if(strs.size() > 3 && strs[3].at(0) == ':')
+        {
+            std::cout << "---------------------1----------------\n";
+            str = str.erase(0, str.find(strs[0]) + strs[0].length() + 1);
+            str = str.erase(0, str.find(strs[1]) + strs[1].length() + 1);
+            str = str.erase(0, str.find(strs[2]) + strs[2].length() + 1);
+            reason = str.erase(0,1);
+        }
+        else
+        {
+            reason = strs[3];
+        }
     }
-    else
-        reason = strs[3];
-
     // Check if the channel exists
     for(std::vector<std::string>::iterator it = kick_channel.begin(); it != kick_channel.end(); it++)
     {

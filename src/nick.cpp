@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:00:56 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/25 00:55:40 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/25 20:19:31 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void Server::nickCmd1(std::string msg, Client *c)
         std::string nickMsg;
         Client *tmpClient = this->getClientByNickname(words[1]);
         if (tmpClient)
-            nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_NICKNAMEINUSE) + " " + c->getNickname() + " " + words[1] + " :Nickname is already in use\r\n";
+            nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_NICKNAMEINUSE) + " " + words[1] + " :Nickname is already in use\r\n";
         else
         {
             nickMsg = ":" + c->getNickname() + "!" + c->getUsername() + "@" + this->get_ip_address(c->getFd()) + " NICK " + words[1] + "\r\n";

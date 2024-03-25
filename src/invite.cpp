@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 20:23:08 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/25 01:06:51 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/25 20:21:39 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void Server::invitecmd(std::string str, int fd)
         // client is already in the channel
         if (this->isClientInChannel(words[1], words[2], this->getChannels()))
         {
-            std::string errorMsg = ":" + this->get_hostnames() + " " + to_string(ERR_USERONCHANNEL) + " " + this->get_nickname(fd) + " " + words[1] + " " + words[2] + " :is already on channel\r\n";
+            std::string errorMsg = ":" + this->get_hostnames() + " " + to_string(ERR_USERONCHANNEL) + " " + this->get_nickname(fd) + " " + words[1] + " :is already on channel\r\n";
             send(fd, errorMsg.c_str(), errorMsg.length(), 0);
             return ;
         }
