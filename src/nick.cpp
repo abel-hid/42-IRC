@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:00:56 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/22 00:10:04 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/25 00:21:50 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void Server::nickCmd1(std::string msg, Client *c)
 		words[0][i] = toupper(words[0][i]);
     if (!words[0].compare("NICK") && words.size() < 2)
     {
-        std::string nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_ERRONEUSNICKNAME) + " NICK :Erroneous nickname\r\n";
+        std::string nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_ERRONEUSNICKNAME) + " NICK :No nickname given\r\n";
         send(c->getFd(), nickMsg.c_str(), nickMsg.length(), 0);
         return ;
     }
@@ -84,7 +84,7 @@ void Server::nickCmd1(std::string msg, Client *c)
     }
     else if (!words[0].compare("NICK") && words.size() > 1 && c->getNickname() != words[1])
     {
-        std::size_t found = words[1].find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_[]\\`^{}");
+        std::size_t found = words[1].find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_[]\\`^{}");
         if (found != std::string::npos)
         {
             std::string nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_ERRONEUSNICKNAME) + " " + words[0] + " :Erroneous nickname\r\n";
