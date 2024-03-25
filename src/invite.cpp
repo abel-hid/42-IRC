@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 20:23:08 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/25 20:21:39 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:38:30 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,12 +153,14 @@ void Server::invitecmd(std::string str, int fd)
         {
             int fdRe = 0;
             std::string name;
+            std::map<std::string, Channel *> channel = this->getChannels();
             for (std::map<int , Client *>::iterator it = this->clients.begin(); it != this->clients.end(); it++)
             {
                 if ((*it).second->getNickname() == words[1]){
                     fdRe = (*it).first;
                     name = (*it).second->getNickname();
                     (*it).second->setInviteToChannel(true);
+                    channel[words[2]]->add_invited_user(name);
                     break;
                 }
             }

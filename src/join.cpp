@@ -6,7 +6,7 @@
 /*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 01:40:02 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/25 01:16:34 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/25 22:42:30 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int Server::public_channel(std::string channel_name , std::string key , int fd)
         return (1);
     }
     // Check if the user is invited to the channel and the channel is invite only
-    if(this->getInviteToChannel(fd) == false && it2 != channels.end() && it2->second->getInviteOnly() == true)
+    if(it2 != channels.end() && it2->second->getInviteOnly() == true && !it2->second->is_invited_user(this->get_nickname(fd)))
     {
         std::string msg = ":" + this->get_hostnames() + " 473 " + this->get_nickname(fd) + " " + channel_name + " :Cannot join channel (+i)\r\n";
         send(fd, msg.c_str(), msg.length(), 0);
@@ -95,10 +95,8 @@ int Server::public_channel(std::string channel_name , std::string key , int fd)
         // Channel exists, add the user to the channel
         if (key == channels[channel_name]->getChannelKey()) 
         {
-            if(it2->second->getInviteOnly() == true)
-            {
-                this->clients[fd]->setInviteToChannel(false);
-            }
+            if(it2->second->is_invited_user(this->get_nickname(fd)))
+                it2->second->remove_invited_user(this->get_nickname(fd));
             // broadcast to all users in the channel
             std::string msg = ":" + this->get_nickname(fd) + "!" + this->get_username(fd) + "@" + this->get_ip_address(fd) + " JOIN " + channel_name + "\r\n";
             join_broadcast_msg(channels, msg, channel_name);

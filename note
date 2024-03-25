@@ -1,0 +1,20 @@
+pass ss
+nick nn
+user s s s s
+:e3r2p6.1337.ma 001 nn :Welcome to the Internet Relay Network nn!s@e3r2p6.1337.ma
+:e3r2p6.1337.ma 001 nn :Welcome to the Internet Relay Network nn!s@e3r2p6.1337.ma
+:e3r2p6.1337.ma 003 nn :This server was created 2024-03-25.02:21:29
+join #aa
+:nn!s@127.0.0.1 JOIN #aa
+:e3r2p6.1337.ma 313 nn #aa :no topic is set
+:e3r2p6.1337.ma 353 nn = #aa :@nn
+:e3r2p6.1337.ma 366 nn #aa :End of /NAMES list
+:hh!s@127.0.0.1 JOIN #aa
+kick #aa hh
+:nn!s@127.0.0.1 KICK #aa hh
+:hh!s@127.0.0.1 JOIN #aa
+kick #aa hh :ksks sjj sjsj sks sks
+:nn!s@127.0.0.1 KICK #aa hh :ksks sjj sjsj sks sks
+:hh!s@127.0.0.1 JOIN #aa
+kick #aa hh
+:nn!s@127.0.0.1 KICK #aa hh :hh :kskhh

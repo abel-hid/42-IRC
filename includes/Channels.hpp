@@ -64,6 +64,7 @@ class Channel
         bool                    inviteOnly;
         std::string             channelKey;
         bool                    topicRestriction;
+        std::set<std::string>   invitedUsers;
     public:
         // CONSTRUCTOR & DESTRUCTOR
         Channel(const std::string& channelName, const std::string& channelTopic = "no topic is set", const std::string& channelPassword = ""  , bool creater = false);
@@ -107,6 +108,19 @@ class Channel
         void                    addOperator(const std::string& user);
         void                    removeUser(const std::string& nickname);
         void                    removeOperator(const std::string& user);
+
+        void add_invited_user(const std::string& nickname)
+        {
+            invitedUsers.insert(nickname);
+        }
+        bool is_invited_user(const std::string& nickname)
+        {
+            return invitedUsers.find(nickname) != invitedUsers.end();
+        }
+        void remove_invited_user(const std::string& nickname)
+        {
+            invitedUsers.erase(nickname);
+        }
 };
 
 #endif
