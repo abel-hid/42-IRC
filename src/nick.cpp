@@ -6,7 +6,7 @@
 /*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:00:56 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/25 00:23:52 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/25 00:55:40 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void Server::nickCmd1(std::string msg, Client *c)
             nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_NICKNAMEINUSE) + " " + c->getNickname() + " " + words[1] + " :Nickname is already in use\r\n";
         else
         {
-            nickMsg = ":" + c->getNickname() + "!" + c->getUsername() + "@" + c->getHostname() + " NICK " + words[1] + "\r\n";
+            nickMsg = ":" + c->getNickname() + "!" + c->getUsername() + "@" + this->get_ip_address(c->getFd()) + " NICK " + words[1] + "\r\n";
             this->users_update(c->getNickname(), words[1], this->getChannels());
             c->setNickname(words[1]);
         }
