@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 19:48:54 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/23 01:09:28 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/25 00:02:10 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,17 @@
 int parssing_port(std::string port)
 {
 	int i = 0;
-    if (port.empty())
+	if (port.empty())
         return (0);
-	if(std::atoi(port.c_str()) > 65535 || std::atoi(port.c_str()) < 1024)
+	while (port[i] == '0')
+		i++;
+	port = port.substr(i);
+	if(std::atoi(port.c_str()) > 65535 || std::atoi(port.c_str()) < 1024 || port.size() > 5)
 		return (0);
 	for (std::string::iterator it = port.begin(); it != port.end(); it++)
     {
         if (!std::isdigit(*it))
             return (0);
-        i++;
     }
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 20:48:02 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/23 01:08:18 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/25 00:01:46 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,17 @@ bool parsingInput(int ac, char **av)
 int parssing_port(std::string port)
 {
 	int i = 0;
+	if (port.empty())
+        return (0);
+	while (port[i] == '0')
+		i++;
+	port = port.substr(i);
 	if(std::atoi(port.c_str()) > 65535 || std::atoi(port.c_str()) < 1024 || port.size() > 5)
 		return (0);
 	for (std::string::iterator it = port.begin(); it != port.end(); it++)
     {
         if (!std::isdigit(*it))
             return (0);
-        i++;
     }
 	return (1);
 }

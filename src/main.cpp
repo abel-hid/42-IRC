@@ -30,10 +30,10 @@ int main(int ac, char **av)
 	signal(SIGINT, handl_signal);
     signal(SIGPIPE, SIG_IGN);
     std::cout << Welcome << std::endl;
-	std::cout<< "\t[\033[32;1mINFO\033[0m] \033[32;1mServer is running on port \033[0m[\033[32;1m" << av[1] << "\033[0m]\n" << std::endl;
     Server server;
     server.setPort(atoi(av[1]));
     server.setServerPassword(av[2]);
+	std::cout<< "\t[\033[32;1mINFO\033[0m] \033[32;1mServer is running on port \033[0m[\033[32;1m" << server.getPort() << "\033[0m]\n" << std::endl;
     if (!server.initServer())
         return (0);
     server.runServer(close_ser);
