@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 02:08:17 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/21 17:54:50 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/25 23:34:09 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,6 +363,7 @@ void Server::modecmd(std::string str, int fd)
     }
     else 
     {
+        
         // check if channel exist && valid name of channel
         if (!this->isChannelExist(words[1]) || !this->isValidChannelName(words[1]))
         {
@@ -397,6 +398,8 @@ void Server::modecmd(std::string str, int fd)
         }
         else
         {
+            if (words[2].at(0) != '+' && words[2].at(0) != '-')
+                return ;
             std::vector<std::string> modes = get_modes(words[2]);
             bool add;
             for (std::vector<std::string>::iterator it = modes.begin(); it != modes.end(); ++it)
