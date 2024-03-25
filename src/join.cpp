@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 01:40:02 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/21 23:18:47 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/25 01:16:34 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,10 @@ int Server::public_channel(std::string channel_name , std::string key , int fd)
         // Channel exists, add the user to the channel
         if (key == channels[channel_name]->getChannelKey()) 
         {
+            if(it2->second->getInviteOnly() == true)
+            {
+                this->clients[fd]->setInviteToChannel(false);
+            }
             // broadcast to all users in the channel
             std::string msg = ":" + this->get_nickname(fd) + "!" + this->get_username(fd) + "@" + this->get_ip_address(fd) + " JOIN " + channel_name + "\r\n";
             join_broadcast_msg(channels, msg, channel_name);
