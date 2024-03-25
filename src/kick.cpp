@@ -6,7 +6,7 @@
 /*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 00:25:47 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/22 00:25:49 by abel-hid         ###   ########.fr       */
+/*   Updated: 2024/03/25 00:44:20 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
     {
         users.push_back(strs[2]);
     }
+    reason.clear();
     reason = "";
     if(strs.size() > 3 && strs[3].at(0) == ':')
     {
@@ -156,7 +157,7 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
             }
         }
     }
-    // Clear the vectors
+    
     kick_channel.clear();
     users.clear();
     message.clear();
