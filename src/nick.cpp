@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:00:56 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/25 20:19:31 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/26 00:08:49 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,16 +116,21 @@ void Server::nickCmd1(std::string msg, Client *c)
 void	Server::cmdknick(std::vector<std::string> &words, Client *c)
 {
     Client *tmpClient;
-    if (words.size() != 2)
+    std::string nickMsg;
+    if (words.size() < 2)
     {
-        std::string nickMsg;
-        if (words.size() < 2)
-            nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_NONICKNAMEGIVEN) + " " + words[0] +  " :No nickname given\r\n";
-        else if (words.size() > 2)
-            nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_ERRONEUSNICKNAME) + " " + words[0] + " :Erroneous nickname\r\n";
+        nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_NONICKNAMEGIVEN) + " " + words[0] +  " :No nickname given\r\n";
         send(c->getFd(), nickMsg.c_str(), nickMsg.length(), 0);
         return ;
     }
+    else if (words.size() > 2 && words[1].at(0) != ':')
+    {
+        nickMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_ERRONEUSNICKNAME) + " " + words[0] + " :Not enough parameters\r\n";
+        send(c->getFd(), nickMsg.c_str(), nickMsg.length(), 0);
+        return ;
+    }
+    if (words[1].at(0) == ':')
+        words[1] = words[1].substr(1, words[1].length() - 1);
     std::size_t found = words[1].find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_[]\\`^{}");
     if (found != std::string::npos)
     {
@@ -133,7 +138,7 @@ void	Server::cmdknick(std::vector<std::string> &words, Client *c)
         send(c->getFd(), nickMsg.c_str(), nickMsg.length(), 0);
         return ;
     }
-    if (words.size() == 2)
+    if (words.size() >= 2)
     {
         tmpClient = this->getClientByNickname(words[1]);
         if ((tmpClient && tmpClient->getFd() != c->getFd() && this->IsAuthorized(*tmpClient)) || (tmpClient && !words[1].compare("Bot")))
@@ -146,7 +151,6 @@ void	Server::cmdknick(std::vector<std::string> &words, Client *c)
             send(c->getFd(), nickMsg.c_str(), nickMsg.length(), 0);
             return ;
         }
-        
         c->setNickname(words[1]);
         if (this->IsAuthorized(*c) && c->getPassword() == this->server_password)
         {

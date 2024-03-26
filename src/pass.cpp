@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: abel-hid <abel-hid@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 02:01:29 by ylamsiah          #+#    #+#             */
-/*   Updated: 2024/03/25 22:08:36 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/26 00:09:42 by abel-hid         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ void	Server::cmdpass(std::vector<std::string>& words, Client *c , std::string st
         else
             pass = words[1];
 		c->setPassword(pass);
-        std::cout << "server_password = " << this->server_password << "." << std::endl;
-        std::cout << "pass = " << pass << "." << std::endl;
         if(c->getPassword() != this->server_password)
         {
             std::string passMsg = ":" + this->get_hostnames() + " " + this->to_string(ERR_PASSWDMISMATCH) + " PASS :Password incorrect\r\n";
