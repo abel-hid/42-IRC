@@ -6,7 +6,7 @@
 /*   By: ylamsiah <ylamsiah@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 00:25:47 by abel-hid          #+#    #+#             */
-/*   Updated: 2024/03/25 22:08:12 by ylamsiah         ###   ########.fr       */
+/*   Updated: 2024/03/26 00:56:06 by ylamsiah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ void Server::KickChannel(std::vector<std::string> strs, std::map<std::string, Ch
             }
         }
     }
-    
     kick_channel.clear();
     users.clear();
     message.clear();

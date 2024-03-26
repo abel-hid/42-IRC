@@ -5,7 +5,7 @@ C_BLUE  = \033[1;34m
 C_CYAN  = \033[1;36m
 C_RESET = \033[0m
 
-CC      = g++
+CC      = c++
 
 RM      = rm -rf
 
