@@ -68,7 +68,7 @@ The server supports the following IRC commands:
 - **KICK**: Kick a user from a channel.
 - **INVITE**: Invite a user to a channel.
 - **MODE**: Set channel modes.
-**mode flags**
+- **mode flags**
 - **o**: Give/take channel operator status.
 - **i**: Set/unset invite-only mode.
 - **k**: Set/unset channel key (password).
