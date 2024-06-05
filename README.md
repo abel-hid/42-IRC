@@ -41,7 +41,7 @@ Welcome to the 42 IRC Server Project! This project implements an Internet Relay 
     ```bash
     ./ircserv 6667 password
     ```
-The server will start listening on the specified port.
+    The server will start listening on the specified port.
 5. **Connect to the Server**
     ```bash
     nc localhost <port>
